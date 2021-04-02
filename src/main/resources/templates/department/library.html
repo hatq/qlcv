@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}" lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Phòng ban</title>
+<meta name="description" content="Ela Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+	<!-- Content -->
+	<div class="content" layout:fragment="layout-content">
+		<!-- Animated -->
+		<div class="animated fadeIn">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card">
+						<div class="card-header row">
+							<div class="col-lg-6 text-left">
+								<strong class="card-title">Danh sách công việc</strong>
+							</div>
+							<div class="col-lg-6 text-right">
+								<input class="btn btn-primary btn-sm" type="button"
+									data-toggle="modal" data-target="#createModal"
+									value="Thêm mới">
+							</div>
+						</div>
+						<div class="table-stats order-table ov-h">
+							<table class="table ">
+								<thead>
+									<tr>
+										<!-- <th>ID</th> -->
+										<th>Công việc</th>
+										<th>Chủ đề</th>
+										<th>Người tiếp nhận</th>
+										<th>Bắt đầu</th>
+										<th>Kết thúc</th>
+										<th>Trạng thái</th>
+										<th>Thao tác</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="work : ${listactionDeparment}">
+										<!-- <td class="serial" th:text="${work.id}"></td> -->
+										<td><span class="name" th:text="${work.actionDetailName}"></span></td>
+										<td><span class="name" th:text="${work.topic.nameTopic}"></span></td>
+										<td><span class="name"
+											th:text="${work.userCreate.userName}"></span></td>
+										<td><span class="name" th:text="${work.startDate}"></span></td>
+										<td><span class="name" th:text="${work.endDate}"></span></td>
+										<td>
+											<div th:switch="${work.status}">
+												<p th:case="'0'">
+													<input class="btn btn-warning btn-sm" type="button"
+														disabled value="New">
+												</p>
+												<p th:case="'1'">
+													<input class="btn btn-info btn-sm" type="button" disabled
+														value="In Progress">
+												</p>
+												<p th:case="'2'">
+													<input class="btn btn-success btn-sm" type="button"
+														disabled value="Resolved">
+												</p>
+												<p th:case="'3'">
+													<input class="btn btn-secondary btn-sm" type="button"
+														disabled value="Cancelled">
+												</p>
+												<p th:case="'4'">
+													<input class="btn btn-danger btn-sm" type="button"
+														disabled value="Re-Open">
+												</p>
+												<p th:case="'5'">
+													<input class="btn btn-danger btn-sm" type="button"
+														disabled value="Closed">
+												</p>
+											</div> 
+										</td>
+										<td>
+											<input class="btn btn-info btn-sm"
+											th:onclick="'editAction(\'' + ${work.id}+ '\');'"
+											data-toggle="modal" data-target="#editModal" type="button"
+											value="Sửa"/>
+											<input class="btn btn-danger btn-sm"
+											th:onclick="'deleteAction(\'' + ${work.id}+ '\');'"
+											type="button" value="Xóa"/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="modal fade" id="createModal" tabindex="-1"
+							role="dialog" aria-labelledby="createModalLabel"
+							aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="createModalLabel">Thêm công việc</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form th:action="@{/topicdepartment/insert}" th:object="${actiondetailRequest}"
+										method="post">
+										<div class="modal-body">
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Công
+													Việc</label> <span style="color: red"> (*)</span> <input type="text" class="form-control"
+													placeholder="Tên công việc " name="actionDetailName" value=""
+													required>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Chủ
+													đề</label> <span style="color: red"> (*)</span> <select id="select" name="idTopic" class="form-control">
+													<option value="0">--Loại chủ đề--</option>
+													<option th:each="topic: ${lstTopic}"
+														th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
+												</select>
+
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Người
+													thực hiện</label> <span style="color: red"> (*)</span> <select name="idUser" id="select"
+													class="form-control">
+													<option value="0">--Người thực hiện--</option>
+													<option th:each="user: ${lstUser}"
+														th:value="${user.idUser}" th:text="${user.userName}"></option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Từ
+													ngày</label> <span style="color: red"> (*)</span>
+												<div class="input-group">
+													<input type="text" class="form-control" required="required"
+														placeholder="dd/MM/yyyy" name="startDate">
+													<div class="input-group-append">
+														<span class="input-group-text"><i
+															class="md md-event-note"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Đến
+													ngày</label> <span style="color: red"> (*)</span>
+												<div>
+													<div class="input-group">
+														<input type="text" class="form-control" required="required"
+															placeholder="dd/MM/yyyy" name="endDate">
+														<div class="input-group-append">
+															<span class="input-group-text"><i
+																class="md md-event-note"></i></span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Hủy</button>
+											<button type="submit" class="btn btn-primary">Lưu</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						
+						<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+							aria-labelledby="editModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="editModalLabel">Chỉnh sửa
+											công việc</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form th:action="@{/topicdepartment/insert}" th:object="${actiondetailRequest}"
+										method="post">
+										<div class="modal-body">
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Công
+													Việc</label> <input type="text" class="form-control"
+													id="idEditAction" name="id" value="" hidden="hidden"
+													required />
+												<input type="text" class="form-control" placeholder="Tên công việc" id="nameEditAction" name="actionDetailName"
+													value="" required />
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Chủ
+													đề</label> <select id="selectEditTopic" name="idTopic" class="form-control">
+													<option value="0">--Loại chủ đề--</option>
+													<option th:each="topic: ${lstTopic}"
+														th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
+												</select>
+
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Người
+													thực hiện</label> <select name="idUser" id="selectEditUser"
+													class="form-control">
+													<option value="0">--Người thực hiện--</option>
+													<option th:each="user: ${lstUser}"
+														th:value="${user.idUser}" th:text="${user.userName}"></option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Từ
+													ngày</label>
+												<div class="input-group">
+													<input type="text" class="form-control"
+														placeholder="dd/MM/yyyy" id="startDate" name="startDate">
+													<div class="input-group-append">
+														<span class="input-group-text"><i
+															class="md md-event-note"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Đến
+													ngày</label>
+												<div>
+													<div class="input-group">
+														<input type="text" class="form-control"
+															placeholder="dd/MM/yyyy" id="endDate" name="endDate">
+														<div class="input-group-append">
+															<span class="input-group-text"><i
+																class="md md-event-note"></i></span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group" >
+												<label for="cc-number" class="control-label mb-1">Trạng thái</label> <select name="status" id="selectEditStatus"
+													class="form-control">
+													<option th:value="0">New(Chờ thực hiện)</option>
+													<option th:value="1">In Progress(Đang thực hiện)</option>
+													<option th:value="2">Resolved(Hoàn thành xử lý)</option>
+													<option th:if="${userLogin.role.level != 4}" th:value="3">Cancelled(Trạng thái hủy yêu cầu)</option>
+													<option th:if="${userLogin.role.level != 4}" th:value="4">Re-Open(Không phù hợp)</option>
+													<option th:if="${userLogin.role.level != 4}" th:value="5">Closed (Hoàn thành đóng yêu cầu)</option>
+												</select>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Hủy</button>
+											<button type="submit" class="btn btn-primary">Lưu</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- /.table-stats -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("li.active").removeClass("active");
+				$("#home").addClass("active");
+			});
+			
+			function deleteAction(id) {
+				console.log(id);
+				$.post('/deleteAction', {
+					idAction : id
+				}).done(function(response) {
+					location.reload();
+				});
+			}
+			function editAction(id) {
+				$("#idEditAction").val(id);
+				
+				$.get('/getAction/' + id).done(
+								function(response) {
+									if (response.id == id) {
+										//console.log(response);
+										$("#nameEditAction").val(
+												response.actionDetailName);
+										var start = new Date(response.startDate);
+										var dd = start.getDate();
+										var mm = start.getMonth()+1;
+										var yyyy= start.getFullYear();
+										if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
+										var startDate = dd+'/'+mm+'/'+yyyy;
+										$("#startDate").val(startDate);
+										
+										var end = new Date(response.endDate);
+										var dd = end.getDate();
+										var mm = end.getMonth()+1;
+										var yyyy= end.getFullYear();
+										if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
+										var endDate = dd+'/'+mm+'/'+yyyy;
+										$("#endDate").val(endDate);
+										
+										$("#selectEditTopic option[value="
+														+ response.topic.idTopic
+														+ "]").attr('selected','selected');
+										$("#selectEditUser option[value="
+												+ response.userAssign.idUser
+												+ "]").attr('selected','selected');
+										
+										$("#selectEditStatus option[value="
+												+ response.status
+												+ "]").attr('selected','selected');
+									}
+
+								});
+			}
+		</script>
+	</div>
+</body>
+</html>

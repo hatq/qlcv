@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Custom</title>
+<meta name="description" content="Ela Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="apple-touch-icon" th:href="@{/img/icon_logo.png}">
+<link rel="shortcut icon" th:href="@{/img/icon_logo.png}">
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css">
+<script th:src="@{/js/jquery.min.js}"></script>
+<link rel="stylesheet" th:href="@{/css/cs-skin-elastic.css}">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+
+<link rel="stylesheet" th:href="@{/assets/scss/icons/css/dripicons.css}">
+<link rel="stylesheet" th:href="@{/assets/scss/icons/css/material-design-iconic-font.css}">
+<link rel="stylesheet" th:href="@{/assets/scss/icons/css/themify-icons.css}">
+<link rel="stylesheet" th:href="@{/assets/scss/icons/css/typicons.css}">
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800'
+	rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+	<!-- Left Panel -->
+	<aside id="left-panel" class="left-panel">
+		<nav class="navbar navbar-expand-sm navbar-default">
+			<div id="main-menu" class="main-menu collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li id ="home" class=""><a href="/"><i class="menu-icon fa fa-laptop"></i>Trang
+							chủ </a>
+					<li class="menu-title">Tổng hợp</li>
+					<!-- /.menu-title -->
+					<li id="department" class="menu-item"><a href="/department/manager"
+						class="dropdown-toggle"> <i class="menu-icon fa fa-cogs"></i>Phòng
+							ban
+					</a></li>
+					<li id="topic" class="menu-item active"><a href="/topic"
+						class="dropdown-toggle"> <i class="menu-icon fa fa-table"></i>Chủ
+							đề
+					</a></li>
+					<li id="report" class="menu-item"><a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa fa-th"></i>Báo cáo
+					</a></li>
+
+					<li class="menu-title">Phòng Ban</li>
+					<!-- /.menu-title -->
+
+					<li th:each="department : ${lstDepartment}" class="menu-item">
+						<a th:href="${'/department/library/'+department.idDepartment}" class="dropdown-toggle" > <i
+							class="menu-icon fa fa-tasks"></i><span
+							th:text="${department.getNameDepartment()}"></span></a>
+					</li>
+
+					<li th:if="*{userLogin.getRole().getLevel() == 1}"
+						class="menu-title">Quản lý hệ thống</li>
+					<!-- /.menu-title -->
+					<li id="user" class="menu-item" th:if="*{userLogin.getRole().getLevel() == 1}"><a
+						href="/user/manager"> <i class="menu-icon ti-email"></i>Quản
+							lý user
+					</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</nav>
+	</aside>
+	<!-- /#left-panel -->
+	<!-- Right Panel -->
+	<div id="right-panel" class="right-panel">
+		<!-- Header-->
+		<header id="header" class="header">
+			<div class="top-left">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="./"><img
+						th:src="@{/img/logo.png}" alt="Logo" src="" width="40%"></a> <a
+						class="navbar-brand hidden" href="./"><img
+						th:src="@{/img/logo2.png}" alt="Logo" src=""></a> <a
+						id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
+				</div>
+			</div>
+			<div class="top-right">
+				<div class="header-menu">
+					<a  class="nav-link"  href="#"> Welcome to back!! </a> 
+					<a class="nav-link" style="color: red;" th:href="@{/logout}"> Logout </a>
+				</div>
+			</div>
+		</header>
+		<!-- /#header -->
+		<!-- Content -->
+		<div class="content" layout:fragment="layout-content"></div>
+		<!-- /.content -->
+		<div class="clearfix"></div>
+		<!-- Footer -->
+		<footer class="site-footer">
+			<div class="footer-inner bg-white">
+				<div class="row">
+					<div class="col-sm-6">Copyright &copy; </div>
+					<div class="col-sm-6 text-right">
+						Thiết kế bởi <a href="https://colorlib.com">Duy Thái</a>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- /.site-footer -->
+	</div>
+	<!-- /#right-panel -->
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
+	
+	<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

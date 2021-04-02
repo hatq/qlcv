@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}" lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Quản lý phòng ban</title>
+<meta name="description" content="Ela Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+	<!-- Header-->
+	
+	<div class="content" layout:fragment="layout-content"
+		style="min-height: 500px">
+		<div class="animated fadeIn">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card">
+						<div class="card-header row">
+							<div class="col-lg-6 text-left">
+								<strong class="card-title">Danh sách phòng ban</strong>
+							</div>
+							<div class="col-lg-6 text-right">
+								<input class="btn btn-primary btn-sm" type="button"
+									data-toggle="modal" data-target="#createModal"
+									value="Thêm mới">
+							</div>
+						</div>
+						<div class="table-stats order-table ov-h">
+							<table class="table ">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Tên Phòng Ban</th>
+										<th>Trạng Thái</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="department : ${lstDepartment}">
+										<td th:text="${department.idDepartment}"></td>
+										<td><span class="name"
+											th:text="${department.getNameDepartment()}"></span></td>
+										<td><input
+											th:onclick="'editDepartment (\'' + ${department.idDepartment}+ '\');'"
+											class="btn btn-info btn-sm" data-toggle="modal"
+											data-target="#editModal" type="button" value="Sửa"> <input
+											th:onclick="'deleteDepartment (\'' + ${department.idDepartment}+ '\');'"
+											class="btn btn-danger btn-sm" type="button" value="Xóa">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="modal fade" id="createModal" tabindex="-1"
+							role="dialog" aria-labelledby="createModalLabel"
+							aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="createModalLabel">Thêm mới
+											phòng ban</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form action="/department/create" method="post">
+										<div class="modal-body">
+											<div class="form-group">
+												<input type="text" class="form-control"
+													placeholder="Tên phòng ban" name="nameDepartment" value=""
+													required>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Hủy</button>
+											<button type="submit" class="btn btn-primary">Lưu</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+							aria-labelledby="editModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="editModalLabel">Chỉnh sửa
+											phòng ban</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form action="/department/edit" method="post">
+										<div class="modal-body">
+											<div class="form-group">
+												<input type="text" class="form-control" id="idDepartment"
+													placeholder="ID Department" name="idDepartment"
+													value="" required> <input type="text"
+													class="form-control" id="nameDepartment"
+													placeholder="Department Name" name="nameDepartment"
+													value="" required>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Hủy</button>
+											<button type="submit"
+												class="btn btn-primary">Lưu</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- /.table-stats -->
+						<!-- <p th:text="${messages}" style="text-align: center; margin-top: 20px; color:red;"></p> -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .animated -->
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("li.active").removeClass("active");
+				$("#department").addClass("active");
+			})
+		    function deleteDepartment(idDepartment){
+		        $.post('/department/delete', {idDepartment: idDepartment}).done(function(response){
+		            if(response == "Success") {
+		                alert("Xóa danh mục thành công");
+		                window.location = "/department/manager";
+		            }
+		            else {
+		                alert("Xóa danh mục thất bại");
+		            }
+		        });
+		    }
+		    function editDepartment(idDepartment){
+		        $.get('/department/get/'+idDepartment).done(function(response){
+		            if(response.idDepartment == idDepartment){
+		                document.getElementById("idDepartment").value = response.idDepartment;
+		                document.getElementById("nameDepartment").value = response.nameDepartment;
+		            }
+		
+		        });
+		    }
+		</script>
+
+	</div>
+	
+	<!-- .content -->
+</body>
+</html>
