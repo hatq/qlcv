@@ -1,9 +1,17 @@
 package info.dt.qlcv.entity;
 
-import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import lombok.Data;
+
+@Data
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,35 +27,4 @@ public class Department {
     @OneToMany(mappedBy = "typeTopic", cascade = CascadeType.ALL)
     private Set<Topic> topicSet;
 
-    public Department() {
-    }
-
-    public Department(String nameDepartment, int status) {
-        this.nameDepartment = nameDepartment;
-        this.status = status;
-    }
-
-    public int getIdDepartment() {
-        return idDepartment;
-    }
-
-    public void setIdDepartment(int idDepartment) {
-        this.idDepartment = idDepartment;
-    }
-
-    public String getNameDepartment() {
-        return nameDepartment;
-    }
-
-    public void setNameDepartment(String nameDepartment) {
-        this.nameDepartment = nameDepartment;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }

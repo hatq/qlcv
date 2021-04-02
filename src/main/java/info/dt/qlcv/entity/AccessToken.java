@@ -1,8 +1,15 @@
 package info.dt.qlcv.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
-@Entity
+import lombok.Data;
+
+@Data
 public class AccessToken {
 
     @Id
@@ -20,40 +27,4 @@ public class AccessToken {
     @Column(name = "status")
     private int status;
 
-    public AccessToken() {
-    }
-
-    public AccessToken(User user, String token, int status) {
-        this.user = user;
-        this.token = token;
-        this.status = status;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }

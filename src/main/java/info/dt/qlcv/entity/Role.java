@@ -1,9 +1,17 @@
 package info.dt.qlcv.entity;
 
-import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import lombok.Data;
+
+@Data
 public class Role {
 
     @Id
@@ -25,44 +33,4 @@ public class Role {
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private Set<User> users;
 
-    public Role() {
-    }
-
-    public Role(String nameRole, int status, int level) {
-        this.nameRole = nameRole;
-        this.status = status;
-        this.level = level;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNameRole() {
-        return nameRole;
-    }
-
-    public void setNameRole(String nameRole) {
-        this.nameRole = nameRole;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }
