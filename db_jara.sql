@@ -323,3 +323,17 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2020-12-07 15:30:27
+
+CREATE TABLE `qlcv`.`raci` (
+  `id` INT NOT NULL,
+  `ki_hieu` VARCHAR(45) NOT NULL,
+  `ten` VARCHAR(45) NOT NULL,
+  `mo_ta` VARCHAR(2000) NOT NULL,
+  PRIMARY KEY (`id`))
+COMMENT = 'mô hình raci';
+INSERT INTO `qlcv`.`raci` (`id`, `ki_hieu`, `ten`, `mo_ta`) VALUES ('1', 'R', 'Resposible', 'Đây là người sẽ thực hiện công việc để hoàn thành nhiệm vụ. Mọi nhiệm vụ đều cần ít nhất một Bên chịu trách nhiệm, nhưng bạn có thể phân công thêm.');
+INSERT INTO `qlcv`.`raci` (`id`, `ki_hieu`, `ten`, `mo_ta`) VALUES ('2', 'A', 'Accountable', 'Người cuối cùng chịu trách nhiệm đối với việc hoàn thành chính xác và toàn diện về kết quả chuyển giao hoặc công việc, và là người giao nhiệm vụ cho những người Responsible. Nói cách khác, người này phải ký vào (phê duyệt) kết quả mà người Responsible cung cấp. Chỉ có duy nhất một Accounttable quy định cho mỗi nhiệm vụ, kết quả chuyển giao.');
+INSERT INTO `qlcv`.`raci` (`id`, `ki_hieu`, `ten`, `mo_ta`) VALUES ('3', 'C', 'Consulted', 'Những người được hỏi ý kiến, điển hình là chuyên gia giải quyết vấn đề.');
+INSERT INTO `qlcv`.`raci` (`id`, `ki_hieu`, `ten`, `mo_ta`) VALUES ('4', 'I', 'Informed', 'Các thành viên trong nhóm này chỉ cần cập nhật tiến độ dự án, thường chỉ khi hoàn thành nhiệm vụ hoặc chuyển giao chứ không tập trung vào chi tiết.');
+
+

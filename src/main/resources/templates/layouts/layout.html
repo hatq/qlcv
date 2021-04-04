@@ -28,8 +28,10 @@
 <link rel="stylesheet" th:href="@{/css/style.css}">
 
 <link rel="stylesheet" th:href="@{/assets/scss/icons/css/dripicons.css}">
-<link rel="stylesheet" th:href="@{/assets/scss/icons/css/material-design-iconic-font.css}">
-<link rel="stylesheet" th:href="@{/assets/scss/icons/css/themify-icons.css}">
+<link rel="stylesheet"
+	th:href="@{/assets/scss/icons/css/material-design-iconic-font.css}">
+<link rel="stylesheet"
+	th:href="@{/assets/scss/icons/css/themify-icons.css}">
 <link rel="stylesheet" th:href="@{/assets/scss/icons/css/typicons.css}">
 <link
 	href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800'
@@ -42,35 +44,39 @@
 		<nav class="navbar navbar-expand-sm navbar-default">
 			<div id="main-menu" class="main-menu collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li id ="home" class=""><a href="/"><i class="menu-icon fa fa-laptop"></i>Trang
-							chủ </a>
+					<li id="home" class=""><a href="/"><i
+							class="menu-icon fa fa-laptop"></i>Trang chủ </a>
 					<li class="menu-title">Tổng hợp</li>
 					<!-- /.menu-title -->
-					<li id="department" class="menu-item"><a href="/department/manager"
-						class="dropdown-toggle"> <i class="menu-icon fa fa-cogs"></i>Phòng
-							ban
+					<li id="department" class="menu-item"><a
+						href="/department/manager" class="dropdown-toggle"> <i
+							class="menu-icon fa fa-cogs"></i>Phòng ban
 					</a></li>
 					<li id="topic" class="menu-item active"><a href="/topic"
 						class="dropdown-toggle"> <i class="menu-icon fa fa-table"></i>Chủ
 							đề
 					</a></li>
-					<li id="report" class="menu-item"><a href="#" class="dropdown-toggle">
-							<i class="menu-icon fa fa-th"></i>Báo cáo
+					<li id="report" class="menu-item"><a href="#"
+						class="dropdown-toggle"> <i class="menu-icon fa fa-th"></i>Báo
+							cáo
 					</a></li>
 
 					<li class="menu-title">Phòng Ban</li>
 					<!-- /.menu-title -->
 
 					<li th:each="department : ${lstDepartment}" class="menu-item">
-						<a th:href="${'/department/library/'+department.idDepartment}" class="dropdown-toggle" > <i
-							class="menu-icon fa fa-tasks"></i><span
+						<a th:href="${'/department/library/'+department.idDepartment}"
+						class="dropdown-toggle"> <i class="menu-icon fa fa-tasks"></i><span
 							th:text="${department.getNameDepartment()}"></span></a>
 					</li>
+					
+					<li class="menu-title"><a href=""><i class="menu-icon fa fa-building"></i>Đăng kí công việc</a></li>
 
 					<li th:if="*{userLogin.getRole().getLevel() == 1}"
 						class="menu-title">Quản lý hệ thống</li>
 					<!-- /.menu-title -->
-					<li id="user" class="menu-item" th:if="*{userLogin.getRole().getLevel() == 1}"><a
+					<li id="user" class="menu-item"
+						th:if="*{userLogin.getRole().getLevel() == 1}"><a
 						href="/user/manager"> <i class="menu-icon ti-email"></i>Quản
 							lý user
 					</a></li>
@@ -95,8 +101,9 @@
 			</div>
 			<div class="top-right">
 				<div class="header-menu">
-					<a  class="nav-link"  href="#"> Welcome to back!! </a> 
-					<a class="nav-link" style="color: red;" th:href="@{/logout}"> Logout </a>
+					<a class="nav-link" href="#"> Welcome to back!! </a> <a
+						class="nav-link" style="color: red;" th:href="@{/logout}">
+						Logout </a>
 				</div>
 			</div>
 		</header>
@@ -109,7 +116,7 @@
 		<footer class="site-footer">
 			<div class="footer-inner bg-white">
 				<div class="row">
-					<div class="col-sm-6">Copyright &copy; </div>
+					<div class="col-sm-6">Copyright &copy;</div>
 					<div class="col-sm-6 text-right">
 						Thiết kế bởi <a href="https://colorlib.com">Duy Thái</a>
 					</div>
@@ -128,7 +135,7 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
-	
+
 	<script th:src="@{/js/main.js}"></script>
 </body>
 </html>
