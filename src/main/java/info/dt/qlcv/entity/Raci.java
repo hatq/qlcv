@@ -13,7 +13,8 @@ import lombok.Data;
 public class Raci {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
 	@Column(name = "ki_hieu")

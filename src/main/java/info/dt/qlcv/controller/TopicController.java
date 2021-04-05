@@ -19,10 +19,12 @@ import info.dt.qlcv.dao.TopicDAO;
 import info.dt.qlcv.dao.TypeTopicDAO;
 import info.dt.qlcv.dao.UserDAO;
 import info.dt.qlcv.entity.Department;
+import info.dt.qlcv.entity.Raci;
 import info.dt.qlcv.entity.Topic;
 import info.dt.qlcv.entity.TypeTopic;
 import info.dt.qlcv.entity.User;
 import info.dt.qlcv.model.TopicRequest;
+import info.dt.qlcv.repository.RaciRepository;
 
 @Controller
 @RequestMapping(value = "/topic")
@@ -36,6 +38,9 @@ public class TopicController {
     private UserDAO userDAO;
     @Autowired
     private DepartmentDAO departmentDAO;
+    
+    @Autowired
+    private RaciRepository raciRepo;
 
     @RequestMapping(value = "")
     private ModelAndView index(@CookieValue(value = "token", defaultValue = "") String token,
@@ -49,6 +54,8 @@ public class TopicController {
             mav.addObject("lstTypeTopic", lstTypeTopic);
             List<Topic> lstTopic = topicDAO.getAllTopic();
             mav.addObject("lstTopic", lstTopic);
+            List<Raci> lstRaci = raciRepo.findAll();
+            mav.addObject("lstRaci", lstRaci);
             List<Department> lstDepartment = departmentDAO.getAllDepartment();
             mav.addObject("lstDepartment", lstDepartment);
             mav.setViewName("/topic/index");
