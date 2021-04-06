@@ -348,4 +348,6 @@ CREATE TABLE `unit` (
   `thoi_gian_tao` DATETIME NULL,
   `thoi_gian_cap_nhat` DATETIME NULL,
   PRIMARY KEY (`id`));
+  ALTER TABLE `unit` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ;
 

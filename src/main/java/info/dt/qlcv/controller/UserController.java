@@ -24,34 +24,49 @@ import org.springframework.web.servlet.ModelAndView;
 import info.dt.qlcv.common.Common;
 import info.dt.qlcv.dao.ActionDetailDAO;
 import info.dt.qlcv.dao.DepartmentDAO;
+import info.dt.qlcv.dao.RaciDAO;
 import info.dt.qlcv.dao.RoleDAO;
 import info.dt.qlcv.dao.TopicDAO;
 import info.dt.qlcv.dao.TypeTopicDAO;
 import info.dt.qlcv.dao.UserDAO;
 import info.dt.qlcv.entity.ActionDetail;
 import info.dt.qlcv.entity.Department;
+import info.dt.qlcv.entity.Raci;
 import info.dt.qlcv.entity.Role;
 import info.dt.qlcv.entity.Topic;
 import info.dt.qlcv.entity.TypeTopic;
+import info.dt.qlcv.entity.Unit;
 import info.dt.qlcv.entity.User;
 import info.dt.qlcv.model.ActionDetailRequest;
 import info.dt.qlcv.model.UserRequest;
+import info.dt.qlcv.repository.UnitRepository;
 
 @Controller
 public class UserController {
 
     @Autowired
     private UserDAO userDAO;
+    
     @Autowired
     private DepartmentDAO departmentDAO;
+    
     @Autowired
     private TopicDAO topicDAO;
+    
     @Autowired
     private TypeTopicDAO typeTopicDAO;
+    
     @Autowired
     public ActionDetailDAO actionDetailDao;
+    
     @Autowired
     public RoleDAO roleDao;
+    
+    @Autowired
+    private RaciDAO raciDao;
+    
+    @Autowired
+    private UnitRepository unitRepo;
 
     @RequestMapping(value = "/")
     public ModelAndView index(HttpServletResponse response, @CookieValue(value = "token", defaultValue = "") String token,
@@ -63,15 +78,21 @@ public class UserController {
             
             List<TypeTopic> lstTypeTopic = typeTopicDAO.getAllTypeTopic();
             mav.addObject("lstTypeTopic", lstTypeTopic);
+            
             List<Topic> lstTopic = topicDAO.getAllTopic();
             mav.addObject("lstTopic", lstTopic);
+            
             List<Department> lstDepartment = departmentDAO.getAllDepartment();
             mav.addObject("lstDepartment", lstDepartment);
+            
+            List<Unit> lstDonVi = unitRepo.findAll();
+            mav.addObject("lstDonVi", lstDonVi);
             
             List<ActionDetail> lstAction = actionDetailDao.getAllActionDetail();
             mav.addObject("lstAction", lstAction);
             
-            
+            List<Raci> lstRaci = raciDao.getAll();
+            mav.addObject("lstRaci", lstRaci);
             
             List<User> lstUser = userDAO.getAllUsert();
             mav.addObject("lstUser", lstUser);
