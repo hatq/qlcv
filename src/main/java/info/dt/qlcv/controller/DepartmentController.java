@@ -92,9 +92,9 @@ public class DepartmentController {
 		if (userDAO.checkToken(idUser, token)) {
 			User user = userDAO.getUserById(idUser);
 			mav.addObject("userLogin", user);
-			List<Department> lstDepartment = departmentDAO.getAllDepartment();
-//			List<Unit> lstDonvi = unitRepo.findAll();
-			mav.addObject("lstDepartment", lstDepartment);
+			List<Unit> lstDonvi = unitRepo.findAll();
+			mav.addObject("lstDonvi", lstDonvi);
+			mav.addObject("maDonViTuDong", this.departmentDAO.taoMaDonVi());
 			mav.setViewName("department/manager");
 		} else {
 			mav.setViewName("redirect:/department/manager");

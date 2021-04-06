@@ -33,21 +33,31 @@
 							<table class="table ">
 								<thead>
 									<tr>
-										<th>ID</th>
-										<th>Tên Phòng Ban</th>
+										<th>Mã Đơn Vị</th>
+										<th>Tên Đơn Vị</th>
+										<th>Loại Đơn Vị</th>
+										<th>Địa chỉ</th>
 										<th>Trạng Thái</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="department : ${lstDepartment}">
-										<td th:text="${department.idDepartment}"></td>
+									<tr th:each="donVi : ${lstDonvi}">
 										<td><span class="name"
-											th:text="${department.getNameDepartment()}"></span></td>
+											th:text="${donVi.maDonVi}"></span></td>
+										<td><span class="name"
+											th:text="${donVi.tenDonVi}"></span></td>
+										<td><span class="name"
+											th:if="${donVi.loaiDonVi == 1}">Kĩ thuật</span>
+											<span class="name"
+											th:if="${donVi.loaiDonVi == 2}">Kinh doanh</span></td>
+										
+										<td><span class="name"
+											th:text="${donVi.diaChi}"></span></td>
 										<td><input
-											th:onclick="'editDepartment (\'' + ${department.idDepartment}+ '\');'"
+											th:onclick="'editDepartment (\'' + ${donVi.id}+ '\');'"
 											class="btn btn-info btn-sm" data-toggle="modal"
 											data-target="#editModal" type="button" value="Sửa"> <input
-											th:onclick="'deleteDepartment (\'' + ${department.idDepartment}+ '\');'"
+											th:onclick="'deleteDepartment (\'' + ${donVi.id}+ '\');'"
 											class="btn btn-danger btn-sm" type="button" value="Xóa">
 										</td>
 									</tr>
@@ -70,9 +80,9 @@
 									<form action="/department/create" method="post">
 										<div class="modal-body">
 											<div class="form-group">
-												<label>Mã đơn vị</label> <input type="text"
+												<label>Mã đơn vị</label> <input type="text" readonly="true"
 													class="form-control" placeholder="Mã đơn vị"
-													name="maDonVi" value="" required>
+													name="maDonVi" th:value="${maDonViTuDong}" required>
 											</div>
 											<div class="form-group">
 												<label>Tên đơn vị</label> <input type="text"
@@ -90,11 +100,11 @@
 											<div class="form-group">
 												<label>Đơn vị cha</label>
 												<select id="chonDonViCha" name="maDonViCha"
-													class="form-control" required>
+													class="form-control">
 													<option value="">Chọn đơn vị cha</option>
-													<option th:each="department: ${lstDepartment}"
-														th:value="${department.idDepartment}"
-														th:text="${department.nameDepartment}"></option>
+													<option th:each="donVi: ${lstDonvi}"
+														th:value="${donVi.maDonVi}"
+														th:text="${donVi.tenDonVi}"></option>
 												</select>
 											</div>
 											<div class="form-group">

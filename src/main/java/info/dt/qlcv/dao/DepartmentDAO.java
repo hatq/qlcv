@@ -29,28 +29,11 @@ public class DepartmentDAO {
         return departmentOptional.orElse(null);
 
     }
-
-    public String addDepartment(DepartmentRequest departmentRequest)
-    {
-        try {
-            if(!departmentRepository.existsDepartmentByNameDepartment(departmentRequest.getNameDepartment()))
-            {
-                Department department = new Department();
-                department.setNameDepartment(departmentRequest.getNameDepartment());
-                department.setStatus(0);
-
-                departmentRepository.save(department);
-
-                return "True";
-            }
-            else
-            {
-                return "Department Name exist !";
-            }
-        }catch (Exception ex)
-        {
-            return ex.getMessage();
-        }
+    
+    public String taoMaDonVi() {
+    	long count = unitRepo.count();
+    	String formatted = String.format("DV.%03d", count+1);
+    	return formatted;
     }
     
     public String addUnit(UnitRequest unitRequest) {

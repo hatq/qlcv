@@ -96,7 +96,7 @@
 						<div class="modal fade" id="createModal" tabindex="-1"
 							role="dialog" aria-labelledby="createModalLabel"
 							aria-hidden="true">
-							<div class="modal-dialog" role="document">
+							<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
 										<h5 class="modal-title" id="createModalLabel">Thêm công việc</h5>
@@ -109,56 +109,114 @@
 										method="post">
 										<div class="modal-body">
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Công
-													Việc</label><span style="color: red"> (*)</span> <input type="text" class="form-control"
+												<label for="cc-number" class="control-label mb-1">Đơn vị</label><span style="color: red"> (*)</span> 
+												<select required="required" name="idUser" id="select" 
+													class="form-control">
+													<option value="0">--Chọn đơn vị--</option>
+													<option th:each="donVi: ${lstDonVi}"
+														th:value="${donVi.id}" th:text="${donVi.tenDonVi}"></option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">STT Công việc</label><span style="color: red"> (*)</span>
+												<input type="text" class="form-control" placeholder="Tên công việc " name="actionDetailName" value="" required>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Nội dung công việc</label><span style="color: red"> (*)</span> <input type="text" class="form-control"
 													placeholder="Tên công việc " name="actionDetailName" value=""
 													required>
 											</div>
+<!-- 											<div class="form-group"> -->
+<!-- 												<label for="cc-number" class="control-label mb-1">Người -->
+<!-- 													thực hiện</label> <span style="color: red"> (*)</span><select required="required" name="idUser" id="select" -->
+<!-- 													class="form-control"> -->
+<!-- 													<option value="0">--Người thực hiện--</option> -->
+<!-- 													<option th:each="user: ${lstUser}" -->
+<!-- 														th:value="${user.idUser}" th:text="${user.userName}"></option> -->
+<!-- 												</select> -->
+<!-- 											</div> -->
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Chủ
-													đề</label> <span style="color: red"> (*)</span> <select id="select" name="idTopic" class="form-control">
+												<label for="cc-number" class="control-label mb-1">Thời gian thực hiện</label> <span style="color: red"> (*)</span>
+												<div class="input-group">
+													<input type="date" class="form-control" required="required"
+														placeholder="dd/MM/yyyy" name="startDate">
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Thời gian hoàn thành</label> <span style="color: red"> (*)</span>
+												<div>
+													<div class="input-group">
+														<input type="date" required="required" class="form-control"
+															placeholder="dd/MM/yyyy" name="endDate">
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Ban giám đốc</label>
+												<select id="select" name="idTopic" class="form-control">
 													<option value="0">--Loại chủ đề--</option>
 													<option th:each="topic: ${lstTopic}"
-														th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
+													th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
 												</select>
 
 											</div>
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Người
-													thực hiện</label> <span style="color: red"> (*)</span><select required="required" name="idUser" id="select"
-													class="form-control">
-													<option value="0">--Người thực hiện--</option>
-													<option th:each="user: ${lstUser}"
-														th:value="${user.idUser}" th:text="${user.userName}"></option>
+												<label for="cc-number" class="control-label mb-1">Phòng NS-TH</label>
+												<select id="select" name="idTopic" class="form-control">
+													<option value="0">--Loại chủ đề--</option>
+													<option th:each="topic: ${lstTopic}"
+													th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
 												</select>
+
 											</div>
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Từ
-													ngày</label> <span style="color: red"> (*)</span>
-												<div class="input-group">
-													<input type="text" class="form-control" required="required"
-														placeholder="dd/MM/yyyy" name="startDate">
-													<div class="input-group-append">
-														<span class="input-group-text"><i
-															class="md md-event-note"></i></span>
-													</div>
-												</div>
-												<!-- input-group -->
+												<label for="cc-number" class="control-label mb-1">Phòng KT-KH</label>
+												<select id="select" name="idTopic" class="form-control">
+													<option value="0">--Loại chủ đề--</option>
+													<option th:each="topic: ${lstTopic}"
+													th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
+												</select>
+
 											</div>
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Đến
-													ngày</label> <span style="color: red"> (*)</span>
-												<div>
-													<div class="input-group">
-														<input type="text" required="required" class="form-control"
-															placeholder="dd/MM/yyyy" name="endDate">
-														<div class="input-group-append">
-															<span class="input-group-text"><i
-																class="md md-event-note"></i></span>
-														</div>
-													</div>
-													<!-- input-group -->
-												</div>
+												<label for="cc-number" class="control-label mb-1">Phòng KT-ĐT</label>
+												<select id="select" name="idTopic" class="form-control">
+													<option value="0">--Loại chủ đề--</option>
+													<option th:each="topic: ${lstTopic}"
+													th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
+												</select>
+
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">TT ĐHTT</label>
+												<select id="select" name="idTopic" class="form-control">
+													<option value="0">--Loại chủ đề--</option>
+													<option th:each="topic: ${lstTopic}"
+													th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
+												</select>
+
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">TT CNTT</label>
+												<select id="select" name="idTopic" class="form-control">
+													<option value="0">--Loại chủ đề--</option>
+													<option th:each="topic: ${lstTopic}"
+													th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
+												</select>
+
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Các TTVT</label>
+												<select id="select" name="idTopic" class="form-control">
+													<option value="0">--Loại chủ đề--</option>
+													<option th:each="topic: ${lstTopic}"
+													th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
+												</select>
+
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Kết quả</label>
+												<input type="text" class="form-control" placeholder="Tên công việc " name="actionDetailName" value="">
 											</div>
 										</div>
 										<div class="modal-footer">
