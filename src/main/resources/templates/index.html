@@ -8,11 +8,6 @@
 <title>Trang chủ</title>
 <meta name="description" content="Ela Admin - HTML5 Admin Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 </head>
 
 <body>
@@ -109,12 +104,12 @@
 											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
-									<form th:action="@{/actiondetail/insert}" th:object="${actiondetailRequest}"
+									<form th:action="@{/actiondetail/insert}" th:object="${work}"
 										method="post">
 										<div class="modal-body">
 											<div class="form-group">
 												<label for="cc-number" class="control-label mb-1">Đơn vị</label><span style="color: red"> (*)</span> 
-												<select required="required" name="idUser" id="select" 
+												<select required="required" name="idDonVi" id="select" 
 													class="form-control">
 													<option value="0">--Chọn đơn vị--</option>
 													<option th:each="donVi: ${lstDonVi}"
@@ -123,96 +118,118 @@
 											</div>
 											<div class="form-group">
 												<label for="cc-number" class="control-label mb-1">STT Công việc</label><span style="color: red"> (*)</span>
-												<input type="text" class="form-control" placeholder="Tên công việc " name="actionDetailName" value="" required>
+												<input type="number" class="form-control" placeholder="STT Công việc " name="sttCongViec" value="" required>
 											</div>
 											<div class="form-group">
 												<label for="cc-number" class="control-label mb-1">Nội dung công việc</label><span style="color: red"> (*)</span> <input type="text" class="form-control"
-													placeholder="Tên công việc " name="actionDetailName" value=""
+													placeholder="Tên công việc " name="noiDungCv" value=""
 													required>
 											</div>
-<!-- 											<div class="form-group"> -->
-<!-- 												<label for="cc-number" class="control-label mb-1">Người -->
-<!-- 													thực hiện</label> <span style="color: red"> (*)</span><select required="required" name="idUser" id="select" -->
-<!-- 													class="form-control"> -->
-<!-- 													<option value="0">--Người thực hiện--</option> -->
-<!-- 													<option th:each="user: ${lstUser}" -->
-<!-- 														th:value="${user.idUser}" th:text="${user.userName}"></option> -->
-<!-- 												</select> -->
-<!-- 											</div> -->
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Thời gian thực hiện</label> <span style="color: red"> (*)</span>
-												<div class="input-group">
-													<input type="date" class="form-control" required="required"
-														placeholder="dd/MM/yyyy" name="startDate">
+												<label for="cc-number" class="control-label mb-1">Người thực hiện</label> <span style="color: red"> (*)</span>
+												<select required="required" name="idUser" id="select"
+													class="form-control">
+													<option value="">--Người thực hiện--</option>
+													<option th:each="user: ${lstUser}"
+														th:value="${user.idUser}" th:text="${user.userName}"></option>
+												</select>
+											</div>
+											<div class="row">
+    											<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Thời gian thực hiện</label> <span style="color: red"> (*)</span>
+														<div class="input-group">
+															<input type="date" class="form-control" required="required"
+																placeholder="dd/MM/yyyy" name="timeThucHien">
+														</div>
+													</div>
+												</div>
+												<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Thời gian hoàn thành</label> <span style="color: red"> (*)</span>
+														<div>
+															<div class="input-group">
+																<input type="date" required="required" class="form-control"
+																	placeholder="dd/MM/yyyy" name="timeHoanThanh">
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Thời gian hoàn thành</label> <span style="color: red"> (*)</span>
-												<div>
-													<div class="input-group">
-														<input type="date" required="required" class="form-control"
-															placeholder="dd/MM/yyyy" name="endDate">
+											<div class="row">
+    											<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Ban giám đốc</label>
+														<select id="select" name="bgd" class="form-control" multiple>
+															<option value="">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+													</div>
+												</div>
+												<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Phòng NS-TH</label>
+														<select id="select" name="nsth" class="form-control" multiple>
+															<option value="">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+    											<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Phòng KT-KH</label>
+														<select id="select" name="ktkh" class="form-control" multiple>
+															<option value="">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+		
+													</div>
+												</div>
+												<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Phòng KT-ĐT</label>
+														<select id="select" name="ktdt" class="form-control" multiple>
+															<option value="">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+		
+													</div>
+												</div>
+											</div>
+											<div class="row">
+    											<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">TT ĐHTT</label>
+														<select id="select" name="dhtt" class="form-control" multiple>
+															<option value="">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+		
+													</div>
+												</div>
+												<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">TT CNTT</label>
+														<select id="select" name="cntt" class="form-control" multiple>
+															<option value="">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+		
 													</div>
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Ban giám đốc</label>
-												<select id="select" name="idTopic" class="form-control selectpicker" multiple>
-													<option value="0">--Chọn RACI--</option>
-													<option th:each="raci: ${lstRaci}"
-													th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
-												</select>
-
-											</div>
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Phòng NS-TH</label>
-												<select id="select" name="idTopic" class="form-control" multiple>
-													<option value="0">--Chọn RACI--</option>
-													<option th:each="raci: ${lstRaci}"
-													th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
-												</select>
-
-											</div>
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Phòng KT-KH</label>
-												<select id="select" name="idTopic" class="form-control" multiple>
-													<option value="0">--Chọn RACI--</option>
-													<option th:each="raci: ${lstRaci}"
-													th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
-												</select>
-
-											</div>
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Phòng KT-ĐT</label>
-												<select id="select" name="idTopic" class="form-control" multiple>
-													<option value="0">--Chọn RACI--</option>
-													<option th:each="raci: ${lstRaci}"
-													th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
-												</select>
-
-											</div>
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">TT ĐHTT</label>
-												<select id="select" name="idTopic" class="form-control" multiple>
-													<option value="0">--Chọn RACI--</option>
-													<option th:each="raci: ${lstRaci}"
-													th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
-												</select>
-
-											</div>
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">TT CNTT</label>
-												<select id="select" name="idTopic" class="form-control" multiple>
-													<option value="0">--Chọn RACI--</option>
-													<option th:each="raci: ${lstRaci}"
-													th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
-												</select>
-
-											</div>
-											<div class="form-group">
 												<label for="cc-number" class="control-label mb-1">Các TTVT</label>
-												<select id="select" name="idTopic" class="form-control" multiple>
-													<option value="0">--Chọn RACI--</option>
+												<select id="select" name="ttvt" class="form-control" multiple>
+													<option value="">--Chọn RACI--</option>
 													<option th:each="raci: ${lstRaci}"
 													th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
 												</select>
@@ -220,7 +237,7 @@
 											</div>
 											<div class="form-group">
 												<label for="cc-number" class="control-label mb-1">Kết quả</label>
-												<input type="text" class="form-control" placeholder="Tên công việc " name="actionDetailName" value="">
+												<input type="text" class="form-control" name="ketQua" value="">
 											</div>
 										</div>
 										<div class="modal-footer">

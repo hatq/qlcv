@@ -351,3 +351,29 @@ CREATE TABLE `unit` (
   ALTER TABLE `unit` 
 CHARACTER SET = utf8 , COLLATE = utf8_general_ci ;
 
+ALTER TABLE `work` 
+DROP COLUMN `id_topic`,
+DROP COLUMN `id_implement`,
+DROP COLUMN `work_status`,
+DROP COLUMN `end_day`,
+DROP COLUMN `start_day`,
+DROP COLUMN `implement`,
+DROP COLUMN `topic`,
+DROP COLUMN `work_name`,
+ADD COLUMN `id_don_vi` INT NULL AFTER `id`,
+ADD COLUMN `stt` VARCHAR(45) NULL AFTER `id_don_vi`,
+ADD COLUMN `noi_dung_cv` VARCHAR(2000) NULL AFTER `stt`,
+ADD COLUMN `id_user` INT NULL AFTER `noi_dung_cv`,
+ADD COLUMN `time_thuc_hien` DATETIME NULL AFTER `id_user`,
+ADD COLUMN `time_hoan_thanh` DATETIME NULL AFTER `time_thuc_hien`,
+ADD COLUMN `bgd` VARCHAR(45) NULL AFTER `time_hoan_thanh`,
+ADD COLUMN `nsth` VARCHAR(45) NULL AFTER `bgd`,
+ADD COLUMN `ktkh` VARCHAR(45) NULL AFTER `nsth`,
+ADD COLUMN `ktdt` VARCHAR(45) NULL AFTER `ktkh`,
+ADD COLUMN `dhtt` VARCHAR(45) NULL AFTER `ktdt`,
+ADD COLUMN `cntt` VARCHAR(45) NULL AFTER `dhtt`,
+ADD COLUMN `ttvt` VARCHAR(45) NULL AFTER `cntt`,
+ADD COLUMN `ket_qua` VARCHAR(2000) NULL AFTER `ttvt`,
+CHANGE COLUMN `id_work` `id` INT(10) NOT NULL AUTO_INCREMENT ;
+
+

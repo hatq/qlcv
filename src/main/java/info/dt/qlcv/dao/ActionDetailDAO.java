@@ -18,6 +18,7 @@ import info.dt.qlcv.repository.UserRepository;
 
 @Service
 public class ActionDetailDAO {
+	
     @Autowired
     private ActionDetailRepository actionDetailRepository;
     @Autowired

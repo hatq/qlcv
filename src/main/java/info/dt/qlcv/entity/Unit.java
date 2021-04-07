@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import lombok.Data;
 
@@ -45,4 +47,15 @@ public class Unit {
 	
 	@Column(name = "thoi_gian_cap_nhat")
 	private Date thoiGianCapNhat;
+	
+	@PrePersist
+	protected void onCreate() {
+		thoiGianTao = new Date();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		thoiGianCapNhat = new Date();
+	}
+	
 }

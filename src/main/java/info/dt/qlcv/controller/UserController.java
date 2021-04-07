@@ -37,292 +37,297 @@ import info.dt.qlcv.entity.Topic;
 import info.dt.qlcv.entity.TypeTopic;
 import info.dt.qlcv.entity.Unit;
 import info.dt.qlcv.entity.User;
-import info.dt.qlcv.model.ActionDetailRequest;
 import info.dt.qlcv.model.UserRequest;
 import info.dt.qlcv.repository.UnitRepository;
 
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserDAO userDAO;
-    
-    @Autowired
-    private DepartmentDAO departmentDAO;
-    
-    @Autowired
-    private TopicDAO topicDAO;
-    
-    @Autowired
-    private TypeTopicDAO typeTopicDAO;
-    
-    @Autowired
-    public ActionDetailDAO actionDetailDao;
-    
-    @Autowired
-    public RoleDAO roleDao;
-    
-    @Autowired
-    private RaciDAO raciDao;
-    
-    @Autowired
-    private UnitRepository unitRepo;
+	@Autowired
+	private UserDAO userDAO;
 
-    @RequestMapping(value = "/")
-    public ModelAndView index(HttpServletResponse response, @CookieValue(value = "token", defaultValue = "") String token,
-                              @CookieValue(value = "userId", defaultValue = "-1") String idUser){
-        ModelAndView mav = new ModelAndView();
+	@Autowired
+	private DepartmentDAO departmentDAO;
 
-        if(userDAO.checkToken(idUser,token)){
-            User user = userDAO.getUserById(idUser);
-            
-            List<TypeTopic> lstTypeTopic = typeTopicDAO.getAllTypeTopic();
-            mav.addObject("lstTypeTopic", lstTypeTopic);
-            
-            List<Topic> lstTopic = topicDAO.getAllTopic();
-            mav.addObject("lstTopic", lstTopic);
-            
-            List<Department> lstDepartment = departmentDAO.getAllDepartment();
-            mav.addObject("lstDepartment", lstDepartment);
-            
-            List<Unit> lstDonVi = unitRepo.findAll();
-            mav.addObject("lstDonVi", lstDonVi);
-            
-            List<ActionDetail> lstAction = actionDetailDao.getAllActionDetail();
-            mav.addObject("lstAction", lstAction);
-            
-            List<Raci> lstRaci = raciDao.getAll();
-            mav.addObject("lstRaci", lstRaci);
-            
-            List<User> lstUser = userDAO.getAllUsert();
-            mav.addObject("lstUser", lstUser);
+	@Autowired
+	private TopicDAO topicDAO;
 
-            mav.addObject("userLogin", user);
-            mav.setViewName("index");
-        }
-        else {
-            mav.setViewName("user/login");
+	@Autowired
+	private TypeTopicDAO typeTopicDAO;
 
-            resetCookie(response);
+	@Autowired
+	public ActionDetailDAO actionDetailDao;
 
-            mav.addObject("messages","");
-        }
-        return mav;
-    }
+	@Autowired
+	public RoleDAO roleDao;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(){
-        ModelAndView mav = new ModelAndView("user/login");
-        mav.addObject("messages","");
-        return mav;
-    }
+	@Autowired
+	private RaciDAO raciDao;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(HttpServletResponse response, @ModelAttribute("userName") String userName,
-                              @ModelAttribute("password") String password ){
-        ModelAndView mav = new ModelAndView("user/login");
-        try {
-            String passwordCheck = Common.hashPass(password);
-            User userLogin = userDAO.login(userName, passwordCheck);
-            if(userLogin != null && userLogin.getRole() != null) {
+	@Autowired
+	private UnitRepository unitRepo;
 
-                String token = userLogin.getAccessToken().getToken();
-                Cookie cookie = new Cookie("token", URLEncoder.encode(token, "UTF-8"));
-                cookie.setMaxAge(3600);
-                response.addCookie(cookie);
+	@RequestMapping(value = "/")
+	public ModelAndView index(HttpServletResponse response,
+			@CookieValue(value = "token", defaultValue = "") String token,
+			@CookieValue(value = "userId", defaultValue = "-1") String idUser) {
+		ModelAndView mav = new ModelAndView();
 
-                Cookie cookie2 = new Cookie("userId", URLEncoder.encode(userLogin.getIdUser()+"", "UTF-8"));
-                cookie2.setMaxAge(3600);
-                response.addCookie(cookie2);
+		if (userDAO.checkToken(idUser, token)) {
+			User user = userDAO.getUserById(idUser);
 
-                mav.addObject("userLogin", userLogin);
-                
-                List<TypeTopic> lstTypeTopic = typeTopicDAO.getAllTypeTopic();
-                mav.addObject("lstTypeTopic", lstTypeTopic);
-                List<Topic> lstTopic = topicDAO.getAllTopic();
-                mav.addObject("lstTopic", lstTopic);
-                List<Department> lstDepartment = departmentDAO.getAllDepartment();
-                mav.addObject("lstDepartment", lstDepartment);
-                List<ActionDetail> lstAction = actionDetailDao.getAllActionDetail();
-                mav.addObject("lstAction", lstAction);
-                mav.setViewName("index");
-            }
-            else {
-                resetCookie(response);
-            }
+			List<TypeTopic> lstTypeTopic = typeTopicDAO.getAllTypeTopic();
+			mav.addObject("lstTypeTopic", lstTypeTopic);
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return mav;
-    }
+			List<Topic> lstTopic = topicDAO.getAllTopic();
+			mav.addObject("lstTopic", lstTopic);
 
-    @RequestMapping(value = "/logout")
-    public String logout(HttpServletResponse response, @CookieValue(value = "token", defaultValue = "") String token,
-                         @CookieValue(value = "userId", defaultValue = "") String idUser){
+			List<Department> lstDepartment = departmentDAO.getAllDepartment();
+			mav.addObject("lstDepartment", lstDepartment);
 
-        resetCookie(response);
+			List<Unit> lstDonVi = unitRepo.findAll();
+			mav.addObject("lstDonVi", lstDonVi);
 
-        userDAO.logout(idUser,token);
-        return "redirect:/";
-    }
+			List<ActionDetail> lstAction = actionDetailDao.getAllActionDetail();
+			mav.addObject("lstAction", lstAction);
 
-    @RequestMapping(value = "/user/register")
-    public ModelAndView register(){
-        ModelAndView mav = new ModelAndView("user/register");
-        mav.addObject("messages", "");
-        mav.addObject("userRequest", new UserRequest());
-        return mav;
-    }
+			List<Raci> lstRaci = raciDao.getAll();
+			mav.addObject("lstRaci", lstRaci);
 
-    @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
-    public ResponseEntity<?> delete(@RequestParam("idUser") int idUser){
-        boolean check = false;
-        if (idUser > -1) {
-            check = userDAO.delete(idUser);
-        }
-        if (check)
-            return ResponseEntity.ok("Success");
-        else
-            return ResponseEntity.ok("Fails");
+			List<User> lstUser = userDAO.getAllUsert();
+			mav.addObject("lstUser", lstUser);
 
-    }
+			mav.addObject("userLogin", user);
+			mav.setViewName("index");
+		} else {
+			mav.setViewName("user/login");
 
-    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
-    public ModelAndView register(@Valid UserRequest userRequest, BindingResult bindingResult){
-        ModelAndView mav = new ModelAndView("user/register");
+			resetCookie(response);
 
-        boolean flagInsert = true;
-        String message = "";
+			mav.addObject("messages", "");
+		}
+		return mav;
+	}
 
-        if(!userRequest.getPassword().equals(userRequest.getConfirmPassword())){
-            message = "Confirm password and Password incorrect";
-            flagInsert = false;
-        }
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView login() {
+		ModelAndView mav = new ModelAndView("user/login");
+		mav.addObject("messages", "");
+		return mav;
+	}
 
-        if (bindingResult.hasErrors() || !flagInsert) {
-            mav.addObject("messages", message);
-        }
-        else {
-            String result = userDAO.addUser(userRequest);
-            if(result.equals("True"))
-                return new ModelAndView("redirect:/");
-            else {
-                mav.addObject("messages", result);
-            }
-        }
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ModelAndView login(HttpServletResponse response, @ModelAttribute("userName") String userName,
+			@ModelAttribute("password") String password) {
+		ModelAndView mav = new ModelAndView("user/login");
+		try {
+			String passwordCheck = Common.hashPass(password);
+			User userLogin = userDAO.login(userName, passwordCheck);
+			if (userLogin != null && userLogin.getRole() != null) {
 
-        return mav;
-    }
+				String token = userLogin.getAccessToken().getToken();
+				Cookie cookie = new Cookie("token", URLEncoder.encode(token, "UTF-8"));
+				cookie.setMaxAge(3600);
+				response.addCookie(cookie);
 
-    @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
-    public ModelAndView editUser(@Valid UserRequest userRequest, BindingResult bindingResult){
-        ModelAndView mav = new ModelAndView("user/manager");
+				Cookie cookie2 = new Cookie("userId", URLEncoder.encode(userLogin.getIdUser() + "", "UTF-8"));
+				cookie2.setMaxAge(3600);
+				response.addCookie(cookie2);
 
-        String message = "";
-        boolean flagInsert = true;
+				mav.addObject("userLogin", userLogin);
 
+				List<TypeTopic> lstTypeTopic = typeTopicDAO.getAllTypeTopic();
+				mav.addObject("lstTypeTopic", lstTypeTopic);
 
-        if(!userRequest.getPassword().equals(userRequest.getConfirmPassword())){
-            message = "Confirm password and Password incorrect";
-            mav.addObject("messages",message);
-            flagInsert = false;
-        }
+				List<Topic> lstTopic = topicDAO.getAllTopic();
+				mav.addObject("lstTopic", lstTopic);
 
-        if (bindingResult.hasErrors() || !flagInsert) {
-            mav.addObject("messages", message);
-            return mav;
-        }
-        else {
-            String result = userDAO.editUser(userRequest);
-            if(result.equals("True"))
-                return new ModelAndView("redirect:/user/manager");
-            else {
-                mav.addObject("messages", result);
-            }
-        }
+				List<Department> lstDepartment = departmentDAO.getAllDepartment();
+				mav.addObject("lstDepartment", lstDepartment);
 
-        return mav;
-    }
-    @RequestMapping(value = "/user/manager")
-    public ModelAndView userManager(HttpServletResponse response, @CookieValue(value = "token", defaultValue = "") String token,
-                                    @CookieValue(value = "userId", defaultValue = "-1") String idUser){
-        ModelAndView mav = new ModelAndView();
+				List<Unit> lstDonVi = unitRepo.findAll();
+				mav.addObject("lstDonVi", lstDonVi);
 
-        if(userDAO.checkToken(idUser,token)){
-            User user = userDAO.getUserById(idUser);
-            if(user.getRole().getLevel() != 1){
-                return new ModelAndView("redirect:/");
-            }
+				List<Raci> lstRaci = raciDao.getAll();
+				mav.addObject("lstRaci", lstRaci);
 
-            List<Role> lstRoles = roleDao.getAllRole();
-            mav.addObject("lstRoles",lstRoles);
-            mav.addObject("userLogin", user);
-            List<Department> lstDepartment = departmentDAO.getAllDepartment();
-            mav.addObject("lstDepartment", lstDepartment);
-            List<User> lstUser = userDAO.getAllUsert();
-            if(lstUser.size()> 0){
-                mav.addObject("lstUser", lstUser);
-            }
-            mav.setViewName("user/manager");
-        }
-        else {
-            mav.setViewName("redirect:/");
-            resetCookie(response);
-        }
-        return mav;
-    }
+				List<User> lstUser = userDAO.getAllUsert();
+				mav.addObject("lstUser", lstUser);
 
-    @RequestMapping(value="/user/get/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getUserByID(@PathVariable("id") int idUser){
-        User user = userDAO.getUserById(idUser);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
+				List<ActionDetail> lstAction = actionDetailDao.getAllActionDetail();
+				mav.addObject("lstAction", lstAction);
 
-    private void resetCookie(HttpServletResponse response){
-        Cookie cookie = new Cookie("token", ""); // Not necessary, but saves bandwidth.
-        cookie.setMaxAge(0); // Don't set to -1 or it will become a session cookie!
-        response.addCookie(cookie);
+				mav.setViewName("index");
+			} else {
+				resetCookie(response);
+			}
 
-        Cookie cookie1 = new Cookie("userId", ""); // Not necessary, but saves bandwidth.
-        cookie1.setMaxAge(0); // Don't set to -1 or it will become a session cookie!
-        response.addCookie(cookie1);
-    }
-    
-    @RequestMapping(value = "/actiondetail/insert", method = RequestMethod.POST)
-    private ModelAndView insert(@ModelAttribute("actiondetailRequest") ActionDetailRequest actionDetailRequest){
-        ModelAndView mav = new ModelAndView();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return mav;
+	}
 
-        actionDetailDao.insertActionDetail(actionDetailRequest);
-        mav.setViewName("redirect:/");
-        return mav;
-    }
-    @RequestMapping(value = "/user/insert", method = RequestMethod.POST)
-    private ModelAndView userinsert(@ModelAttribute("ueserRequest") UserRequest userRequest){
-        ModelAndView mav = new ModelAndView();
+	@RequestMapping(value = "/logout")
+	public String logout(HttpServletResponse response, @CookieValue(value = "token", defaultValue = "") String token,
+			@CookieValue(value = "userId", defaultValue = "") String idUser) {
 
-        userDAO.addUser(userRequest);
-        mav.setViewName("redirect:manager");
-        return mav;
-    }
-    
-    @RequestMapping(value = "/getAction/{idAction}", method = RequestMethod.GET)
-    public ResponseEntity<?> getAction(@PathVariable("idAction") int idAction){
+		resetCookie(response);
 
-        ActionDetail result = actionDetailDao.getActionById(idAction);
-        if(result!=null)
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-    }
-    
-    @RequestMapping(value = "/deleteAction", method = RequestMethod.POST)
-    public ResponseEntity<?> deleteAction(@RequestParam("idAction") int idAction){
+		userDAO.logout(idUser, token);
+		return "redirect:/";
+	}
 
-        boolean result = actionDetailDao.deleteAction(idAction);
-        if(result)
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-    }
+	@RequestMapping(value = "/user/register")
+	public ModelAndView register() {
+		ModelAndView mav = new ModelAndView("user/register");
+		mav.addObject("messages", "");
+		mav.addObject("userRequest", new UserRequest());
+		return mav;
+	}
+
+	@RequestMapping(value = "/user/delete", method = RequestMethod.POST)
+	public ResponseEntity<?> delete(@RequestParam("idUser") int idUser) {
+		boolean check = false;
+		if (idUser > -1) {
+			check = userDAO.delete(idUser);
+		}
+		if (check)
+			return ResponseEntity.ok("Success");
+		else
+			return ResponseEntity.ok("Fails");
+
+	}
+
+	@RequestMapping(value = "/user/register", method = RequestMethod.POST)
+	public ModelAndView register(@Valid UserRequest userRequest, BindingResult bindingResult) {
+		ModelAndView mav = new ModelAndView("user/register");
+
+		boolean flagInsert = true;
+		String message = "";
+
+		if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
+			message = "Confirm password and Password incorrect";
+			flagInsert = false;
+		}
+
+		if (bindingResult.hasErrors() || !flagInsert) {
+			mav.addObject("messages", message);
+		} else {
+			String result = userDAO.addUser(userRequest);
+			if (result.equals("True"))
+				return new ModelAndView("redirect:/");
+			else {
+				mav.addObject("messages", result);
+			}
+		}
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/user/edit", method = RequestMethod.POST)
+	public ModelAndView editUser(@Valid UserRequest userRequest, BindingResult bindingResult) {
+		ModelAndView mav = new ModelAndView("user/manager");
+
+		String message = "";
+		boolean flagInsert = true;
+
+		if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
+			message = "Confirm password and Password incorrect";
+			mav.addObject("messages", message);
+			flagInsert = false;
+		}
+
+		if (bindingResult.hasErrors() || !flagInsert) {
+			mav.addObject("messages", message);
+			return mav;
+		} else {
+			String result = userDAO.editUser(userRequest);
+			if (result.equals("True"))
+				return new ModelAndView("redirect:/user/manager");
+			else {
+				mav.addObject("messages", result);
+			}
+		}
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/user/manager")
+	public ModelAndView userManager(HttpServletResponse response,
+			@CookieValue(value = "token", defaultValue = "") String token,
+			@CookieValue(value = "userId", defaultValue = "-1") String idUser) {
+		ModelAndView mav = new ModelAndView();
+
+		if (userDAO.checkToken(idUser, token)) {
+			User user = userDAO.getUserById(idUser);
+			if (user.getRole().getLevel() != 1) {
+				return new ModelAndView("redirect:/");
+			}
+
+			List<Role> lstRoles = roleDao.getAllRole();
+			mav.addObject("lstRoles", lstRoles);
+			mav.addObject("userLogin", user);
+			List<Department> lstDepartment = departmentDAO.getAllDepartment();
+			mav.addObject("lstDepartment", lstDepartment);
+			List<User> lstUser = userDAO.getAllUsert();
+			if (lstUser.size() > 0) {
+				mav.addObject("lstUser", lstUser);
+			}
+			mav.setViewName("user/manager");
+		} else {
+			mav.setViewName("redirect:/");
+			resetCookie(response);
+		}
+		return mav;
+	}
+
+	@RequestMapping(value = "/user/get/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Object> getUserByID(@PathVariable("id") int idUser) {
+		User user = userDAO.getUserById(idUser);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
+	private void resetCookie(HttpServletResponse response) {
+		Cookie cookie = new Cookie("token", ""); // Not necessary, but saves
+													// bandwidth.
+		cookie.setMaxAge(0); // Don't set to -1 or it will become a session
+								// cookie!
+		response.addCookie(cookie);
+
+		Cookie cookie1 = new Cookie("userId", ""); // Not necessary, but saves
+													// bandwidth.
+		cookie1.setMaxAge(0); // Don't set to -1 or it will become a session
+								// cookie!
+		response.addCookie(cookie1);
+	}
+
+	@RequestMapping(value = "/user/insert", method = RequestMethod.POST)
+	private ModelAndView userinsert(@ModelAttribute("ueserRequest") UserRequest userRequest) {
+		ModelAndView mav = new ModelAndView();
+
+		userDAO.addUser(userRequest);
+		mav.setViewName("redirect:manager");
+		return mav;
+	}
+
+	@RequestMapping(value = "/getAction/{idAction}", method = RequestMethod.GET)
+	public ResponseEntity<?> getAction(@PathVariable("idAction") int idAction) {
+
+		ActionDetail result = actionDetailDao.getActionById(idAction);
+		if (result != null)
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+	}
+
+	@RequestMapping(value = "/deleteAction", method = RequestMethod.POST)
+	public ResponseEntity<?> deleteAction(@RequestParam("idAction") int idAction) {
+
+		boolean result = actionDetailDao.deleteAction(idAction);
+		if (result)
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+	}
 }
