@@ -35,15 +35,14 @@
             <div class="login-form">
             	<br/>
             	<div class="login-logo">
-	               <img th:src="@{/img/logo.png}" alt="Logo" src="" width="40%">
+	               <h3>Đăng kí mới</h3>
 	            </div>
             	<br/>
                 <form th:action="@{/user/register}" th:object="${userRequest}" method="POST">
-
-                    <div class="form-group">
-                        <p>Last Name</p>
-                        <input type="text" th:field="*{lastName}" class="form-control" placeholder="Last Name">
-                        <p style="color:red;" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</p>
+					<div class="form-group">
+                        <p>User Name</p>
+                        <input type="text" th:field="*{userName}" class="form-control" placeholder="User Name">
+                        <p style="color:red;" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">User Name Error</p>
                     </div>
                     <div class="form-group">
                         <p>First Name</p>
@@ -51,14 +50,18 @@
                         <p style="color:red;" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</p>
                     </div>
                     <div class="form-group">
+                        <p>Last Name</p>
+                        <input type="text" th:field="*{lastName}" class="form-control" placeholder="Last Name">
+                        <p style="color:red;" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</p>
+                    </div>
+                    <div class="form-group">
+                        <p>Email address</p>
+                        <input type="tel" th:field="*{phone}" class="form-control" placeholder="Email">
+                    </div>
+                    <div class="form-group">
                         <p>Email address</p>
                         <input type="email" th:field="*{email}" class="form-control" placeholder="Email">
                         <p style="color:red;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
-                    </div>
-                    <div class="form-group">
-                        <p>User Name</p>
-                        <input type="text" th:field="*{userName}" class="form-control" placeholder="User Name">
-                        <p style="color:red;" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">User Name Error</p>
                     </div>
                     <div class="form-group">
                         <p>Password</p>
@@ -70,6 +73,14 @@
                         <input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Confirm Password">
                         <p style="color:red;" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Confirm Password Error</p>
                     </div>
+                    <div class="form-group">
+						<label for="cc-number" class="control-label mb-1">Đơn vị</label>
+						<select id="select" name="idDonVi" class="form-control" multiple>
+							<option value="">--Chọn đơn vị--</option>
+							<option th:each="donVi: ${lstDonVi}" th:value="${donVi.id}"
+								th:text="${donVi.tenDonVi}"></option>
+						</select>
+					</div>
 
                     <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Register</button>
 

@@ -10,23 +10,22 @@ import org.springframework.web.servlet.ModelAndView;
 
 import info.dt.qlcv.common.Common;
 import info.dt.qlcv.entity.AccessToken;
-import info.dt.qlcv.entity.Employee;
 import info.dt.qlcv.entity.Role;
 import info.dt.qlcv.entity.User;
 import info.dt.qlcv.model.UserRequest;
 import info.dt.qlcv.repository.AccessTokenRepository;
-import info.dt.qlcv.repository.EmployeeRepository;
 import info.dt.qlcv.repository.RoleRepository;
 import info.dt.qlcv.repository.UserRepository;
 
 @Service
 public class UserDAO {
+	
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private EmployeeRepository employeeRepository;
+	
 	@Autowired
 	private RoleRepository roleRepository;
+	
 	@Autowired
 	private AccessTokenRepository accessTokenRepository;
 
@@ -51,27 +50,19 @@ public class UserDAO {
 
 	public String addUser(UserRequest userRequest) {
 		try {
-			if (!userRepository.existsByUserNameOrEmail(userRequest.getUserName(), userRequest.getEmail())) {
-				Role role = roleRepository.findByLevelAndStatus(4, 0);
+			if (!userRepository.existsByUserName(userRequest.getUserName())) {
 
 				User user = new User();
-				user.setIdUser(userRequest.getIdUser());
-				user.setEmail(userRequest.getEmail());
 				user.setUserName(userRequest.getUserName());
-				String password = Common.hashPass(userRequest.getPassword());
-				user.setPassword(password);
-				user.setRole(role);
+				user.setFirstName(userRequest.getFirstName());
+				user.setLastName(userRequest.getLastName());
+				user.setPhone(userRequest.getPhone());
+				user.setEmail(userRequest.getEmail());
+				user.setPassword(Common.hashPass(userRequest.getPassword()));
+				user.setRoleId(userRequest.getRoleId());
+				user.setDonVi(convertDonVi(userRequest.getIdDonVi()));
 
-				User userInsert = userRepository.save(user);
-
-				Employee employee = new Employee();
-				employee.setFirstName(userRequest.getFirstName());
-				employee.setLastName(userRequest.getLastName());
-				employee.setPoint(0);
-				employee.setNote("");
-				employee.setUser(userInsert);
-				employeeRepository.save(employee);
-
+				this.userRepository.save(user);
 				return "True";
 			} else {
 				return "Email or User name exist";
@@ -80,12 +71,16 @@ public class UserDAO {
 			return ex.getMessage();
 		}
 	}
+	
+	private String convertDonVi(String[] arrDonVi) {
+		return String.join(",", arrDonVi);
+	}
 
 	public String editUser(UserRequest userRequest) {
 		try {
 			Optional<User> userOptional = userRepository.findById(userRequest.getIdUser());
 			if (userOptional.isPresent()) {
-				Role role = roleRepository.findByLevelAndStatus(userRequest.getRoleLevel(), 0);
+				Role role = roleRepository.findByLevelAndStatus(userRequest.getRoleId(), 0);
 				if (role == null)
 					return "Role don't exist";
 
@@ -106,15 +101,7 @@ public class UserDAO {
 					ModelAndView mav = new ModelAndView("user/manager");
 					mav.addObject("messages", "Password not entered");
 				}
-				User userInsert = userRepository.save(user);
-
-				Employee employee = userOptional.get().getEmployee();
-				employee.setNote("");
-				employee.setFirstName(userRequest.getFirstName());
-				employee.setLastName(userRequest.getLastName());
-				employee.setUser(userInsert);
-				employeeRepository.save(employee);
-
+				this.userRepository.save(user);
 				return "True";
 			} else {
 				return "Account not found";

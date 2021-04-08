@@ -127,11 +127,11 @@ public class UserController {
 
 				String token = userLogin.getAccessToken().getToken();
 				Cookie cookie = new Cookie("token", URLEncoder.encode(token, "UTF-8"));
-				cookie.setMaxAge(3600);
+				cookie.setMaxAge(86400);
 				response.addCookie(cookie);
 
 				Cookie cookie2 = new Cookie("userId", URLEncoder.encode(userLogin.getIdUser() + "", "UTF-8"));
-				cookie2.setMaxAge(3600);
+				cookie2.setMaxAge(86400);
 				response.addCookie(cookie2);
 
 				mav.addObject("userLogin", userLogin);
@@ -181,6 +181,8 @@ public class UserController {
 	@RequestMapping(value = "/user/register")
 	public ModelAndView register() {
 		ModelAndView mav = new ModelAndView("user/register");
+		List<Unit> lstDonVi = unitRepo.findAll();
+		mav.addObject("lstDonVi", lstDonVi);
 		mav.addObject("messages", "");
 		mav.addObject("userRequest", new UserRequest());
 		return mav;
@@ -214,6 +216,7 @@ public class UserController {
 		if (bindingResult.hasErrors() || !flagInsert) {
 			mav.addObject("messages", message);
 		} else {
+			userRequest.setRoleId(5); // Role mac dinh khi tao moi
 			String result = userDAO.addUser(userRequest);
 			if (result.equals("True"))
 				return new ModelAndView("redirect:/");
@@ -232,11 +235,11 @@ public class UserController {
 		String message = "";
 		boolean flagInsert = true;
 
-		if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
-			message = "Confirm password and Password incorrect";
-			mav.addObject("messages", message);
-			flagInsert = false;
-		}
+//		if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
+//			message = "Confirm password and Password incorrect";
+//			mav.addObject("messages", message);
+//			flagInsert = false;
+//		}
 
 		if (bindingResult.hasErrors() || !flagInsert) {
 			mav.addObject("messages", message);
@@ -264,6 +267,9 @@ public class UserController {
 			if (user.getRole().getLevel() != 1) {
 				return new ModelAndView("redirect:/");
 			}
+			
+			List<Unit> lstDonVi = unitRepo.findAll();
+			mav.addObject("lstDonVi", lstDonVi);
 
 			List<Role> lstRoles = roleDao.getAllRole();
 			mav.addObject("lstRoles", lstRoles);
@@ -289,21 +295,17 @@ public class UserController {
 	}
 
 	private void resetCookie(HttpServletResponse response) {
-		Cookie cookie = new Cookie("token", ""); // Not necessary, but saves
-													// bandwidth.
-		cookie.setMaxAge(0); // Don't set to -1 or it will become a session
-								// cookie!
+		Cookie cookie = new Cookie("token", ""); // Not necessary, but saves bandwidth.
+		cookie.setMaxAge(0); // Don't set to -1 or it will become a session cookie!
 		response.addCookie(cookie);
 
-		Cookie cookie1 = new Cookie("userId", ""); // Not necessary, but saves
-													// bandwidth.
-		cookie1.setMaxAge(0); // Don't set to -1 or it will become a session
-								// cookie!
+		Cookie cookie1 = new Cookie("userId", ""); // Not necessary, but saves bandwidth.
+		cookie1.setMaxAge(0); // Don't set to -1 or it will become a session cookie!
 		response.addCookie(cookie1);
 	}
 
 	@RequestMapping(value = "/user/insert", method = RequestMethod.POST)
-	private ModelAndView userinsert(@ModelAttribute("ueserRequest") UserRequest userRequest) {
+	private ModelAndView userinsert(@ModelAttribute("userRequest") UserRequest userRequest) {
 		ModelAndView mav = new ModelAndView();
 
 		userDAO.addUser(userRequest);

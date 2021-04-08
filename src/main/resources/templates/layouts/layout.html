@@ -62,16 +62,12 @@
 					</a></li>
 
 					<li class="menu-title">Phòng Ban</li>
-					<!-- /.menu-title -->
 
 					<li th:each="department : ${lstDepartment}" class="menu-item">
 						<a th:href="${'/department/library/'+department.idDepartment}"
 						class="dropdown-toggle"> <i class="menu-icon fa fa-tasks"></i><span
 							th:text="${department.getNameDepartment()}"></span></a>
 					</li>
-					
-<!-- 					<li class="menu-title"><a href=""><i class="menu-icon fa fa-building"></i>Đăng kí công việc</a></li> -->
-
 					<li th:if="*{userLogin.getRole().getLevel() == 1}"
 						class="menu-title">Quản lý hệ thống</li>
 					<!-- /.menu-title -->
@@ -101,7 +97,7 @@
 			</div>
 			<div class="top-right">
 				<div class="header-menu">
-					<a class="nav-link" href="#"> Welcome to back!! </a> <a
+					<a class="nav-link" href="/">Xin chào&nbsp;<span th:text=${userLogin.userName}></span></a> <a
 						class="nav-link" style="color: red;" th:href="@{/logout}">
 						Logout </a>
 				</div>
@@ -118,7 +114,7 @@
 				<div class="row">
 					<div class="col-sm-6">Copyright &copy;</div>
 					<div class="col-sm-6 text-right">
-						Thiết kế bởi <a href="https://colorlib.com">Duy Thái</a>
+						Thiết kế bởi <a href="https://colorlib.com">Huy Thái</a>
 					</div>
 				</div>
 			</div>

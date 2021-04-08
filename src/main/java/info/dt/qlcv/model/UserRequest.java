@@ -10,25 +10,30 @@ public class UserRequest {
 
     private int idUser;
 
-    private int roleLevel;
-
+    @NotEmpty
+    private String userName;
+    
     @NotEmpty
     private String firstName;
 
     @NotEmpty
     private String lastName;
 
+    private String phone;
+    
     @NotEmpty
     @Email
     private String email;
 
-    @NotEmpty
-    private String userName;
-
+    private Integer roleId;
+    
     @NotEmpty
     private String password;
-
+    
     @NotEmpty
     private String confirmPassword;
+    
+    private String[] idDonVi;
+
 
 }

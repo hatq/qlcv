@@ -39,8 +39,6 @@
 										<th>ID</th>
 										<th>Tên</th>
 										<th>Quyền</th>
-										<th>Điểm</th>
-										<th>Ghi Chú</th>
 										<th>Trạng Thái</th>
 									</tr>
 								</thead>
@@ -55,14 +53,10 @@
 										</td>
 										<td th:text="${user.idUser}"></td>
 										<td><span class="name"
-											th:text="${user.getEmployee().getLastName()} + ${user.getEmployee().getFirstName()}"></span>
+											th:text="${user.firstName} + ${user.lastName}"></span>
 										</td>
 										<td><span class="product"
 											th:text="${user.getRole().getNameRole()}"></span></td>
-										<td><span class="count"
-											th:text="${user.getEmployee().getPoint()}"></span></td>
-										<td><span class="note"
-											th:text="${user.getEmployee().getNote()}"></span></td>
 										<td><input
 											th:onclick="'editUser (\'' + ${user.idUser}+ '\');'"
 											class="btn btn-info btn-sm" data-toggle="modal"
@@ -87,32 +81,29 @@
 											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
-									<form th:action="@{/user/insert}" th:object="${ueserRequest}"
+									<form autocomplete="off" th:action="@{/user/insert}" th:object="${userRequest}"
 										method="post">
 										<div class="modal-body">
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Last
-													name</label> <input type="text" class="form-control"
-													placeholder="Tên tài khoản " name="lastName" value=""
-													required>
+												<label for="cc-number" class="control-label mb-1">User name</label>
+												<input type="text" autocomplete="off" class="form-control"
+													placeholder="Tên tài khoản" name="userName" value="" required>
 											</div>
 											<div class="form-group">
 												<label for="cc-number" class="control-label mb-1">First
 													name</label> <input type="text" class="form-control"
-													placeholder="Tên tài khoản " name="firstName" value=""
+													placeholder="Họ" name="firstName" value=""
 													required>
 											</div>
-
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">User
+												<label for="cc-number" class="control-label mb-1">Last
 													name</label> <input type="text" class="form-control"
-													placeholder="Tên tài khoản " name="userName" value=""
+													placeholder="Tên" name="lastName" value=""
 													required>
 											</div>
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Email</label>
-												<input type="email" class="form-control"
-													placeholder="Địa chỉ email" name="email" value="" required>
+												<label for="cc-number" class="control-label mb-1">Số điện thoại</label>
+												<input type="tel" id="phone" class="form-control" name="phone" pattern="[0-9]{10}" required>
 											</div>
 											<div class="form-group">
 												<label for="cc-number" class="control-label mb-1">Password</label>
@@ -121,21 +112,20 @@
 													required>
 											</div>
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Confirm
-													Password</label> <input type="password" class="form-control"
-													placeholder="Nhập lại mật khẩu" name="confirmPassword"
-													value="" required>
-											</div>
-
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Quyền</label>
-												<select id="select" name="idRole" class="form-control">
-													<option value="0">--Quyền--</option>
+												<label for="cc-number" class="control-label mb-1">Vai trò</label>
+												<select id="select" name="roleId" class="form-control">
 													<option th:each="role: ${lstRoles}" th:value="${role.id}"
 														th:text="${role.nameRole}"></option>
 												</select>
 											</div>
-
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Đơn vị</label>
+												<select id="select" name="idDonVi" class="form-control" multiple>
+													<option value="">--Chọn đơn vị--</option>
+													<option th:each="donVi: ${lstDonVi}" th:value="${donVi.id}"
+														th:text="${donVi.tenDonVi}"></option>
+												</select>
+											</div>
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary"
