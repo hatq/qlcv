@@ -14,6 +14,8 @@
 
 
 	<!-- Header-->
+	<!-- .content -->
+	
 	<div class="content" layout:fragment="layout-content"
 		style="min-height: 500px">
 		<div class="animated fadeIn">
@@ -31,7 +33,7 @@
 							</div>
 						</div>
 						<div class="table-stats order-table ov-h">
-							<table class="table ">
+							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
 										<!-- <th class="serial">#</th> -->
@@ -221,7 +223,10 @@
 				</div>
 			</div>
 		</div>
-		<!-- .animated -->
+		
+	</div>
+</body>
+<!-- .animated -->
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$("li.active").removeClass("active");
@@ -242,22 +247,20 @@
 			function editUser(idUser) {
 				$("#idEditUser").val(idUser);
 				$.get('/user/get/' + idUser).done(
-								function(response) {
-									if (response.idUser == idUser) {
-										$("#idUser").val(response.idUser);
-										$("#lastName").val(response.employee.lastName);
-										$("#firstName").val(response.employee.firstName);
-										$("#email").val(response.email);
-										$("#userName").val(response.userName);
-										$("#password").val(response.password);
-										$("#confirmPassword").val(response.password);
-										$("#selectRole").prop("selectedIndex",response.role.level);
-										console.log(response);
-									}
-								});
+					function(response) {
+						if (response.idUser == idUser) {
+							$("#idUser").val(response.idUser);
+							$("#lastName").val(response.employee.lastName);
+							$("#firstName").val(response.employee.firstName);
+							$("#email").val(response.email);
+							$("#userName").val(response.userName);
+							$("#password").val(response.password);
+							$("#confirmPassword").val(response.password);
+							$("#selectRole").prop("selectedIndex",response.role.level);
+							console.log(response);
+						}
+					});
 			}
 		</script>
-	</div>
-	<!-- .content -->
-</body>
 </html>
+

@@ -374,6 +374,19 @@ ADD COLUMN `dhtt` VARCHAR(45) NULL AFTER `ktdt`,
 ADD COLUMN `cntt` VARCHAR(45) NULL AFTER `dhtt`,
 ADD COLUMN `ttvt` VARCHAR(45) NULL AFTER `cntt`,
 ADD COLUMN `ket_qua` VARCHAR(2000) NULL AFTER `ttvt`,
+ADD COLUMN `create_time` DATETIME NULL AFTER `ket_qua`,
+ADD COLUMN `update_time` DATETIME NULL AFTER `create_time`,
+ADD COLUMN `id_user_thuc_hien` INT NULL AFTER `id_user`,
 CHANGE COLUMN `id_work` `id` INT(10) NOT NULL AUTO_INCREMENT ;
 
-
+ALTER TABLE  `user` 
+ADD COLUMN `phone` VARCHAR(45) NULL AFTER `last_name`,
+ADD COLUMN `don_vi` VARCHAR(200) NULL AFTER `phone`,
+ADD COLUMN `status` INT NULL AFTER `don_vi`,
+ADD COLUMN `create_time` DATETIME NULL AFTER `status`,
+ADD COLUMN `update_time` DATETIME NULL AFTER `create_time`,
+CHANGE COLUMN `email` `user_name` VARCHAR(255) NULL DEFAULT NULL ,
+CHANGE COLUMN `user_name` `first_name` VARCHAR(255) NULL DEFAULT NULL ,
+CHANGE COLUMN `role_id` `last_name` VARCHAR(255) NULL DEFAULT NULL ;
+ADD COLUMN `role_id` INT NULL AFTER `status`;
+ADD COLUMN `email` VARCHAR(200) NULL AFTER `phone`;

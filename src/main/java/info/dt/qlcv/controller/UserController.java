@@ -29,7 +29,7 @@ import info.dt.qlcv.dao.RoleDAO;
 import info.dt.qlcv.dao.TopicDAO;
 import info.dt.qlcv.dao.TypeTopicDAO;
 import info.dt.qlcv.dao.UserDAO;
-import info.dt.qlcv.entity.ActionDetail;
+import info.dt.qlcv.dao.WorkDAO;
 import info.dt.qlcv.entity.Department;
 import info.dt.qlcv.entity.Raci;
 import info.dt.qlcv.entity.Role;
@@ -37,6 +37,7 @@ import info.dt.qlcv.entity.Topic;
 import info.dt.qlcv.entity.TypeTopic;
 import info.dt.qlcv.entity.Unit;
 import info.dt.qlcv.entity.User;
+import info.dt.qlcv.entity.Work;
 import info.dt.qlcv.model.UserRequest;
 import info.dt.qlcv.repository.UnitRepository;
 
@@ -66,6 +67,9 @@ public class UserController {
 
 	@Autowired
 	private UnitRepository unitRepo;
+	
+	@Autowired
+	private WorkDAO workDao;
 
 	@RequestMapping(value = "/")
 	public ModelAndView index(HttpServletResponse response,
@@ -88,13 +92,14 @@ public class UserController {
 			List<Unit> lstDonVi = unitRepo.findAll();
 			mav.addObject("lstDonVi", lstDonVi);
 
-			List<ActionDetail> lstAction = actionDetailDao.getAllActionDetail();
-			mav.addObject("lstAction", lstAction);
+			List<Work> lstWork = this.workDao.findAll();
+			mav.addObject("lstWork", lstWork);
 
 			List<Raci> lstRaci = raciDao.getAll();
 			mav.addObject("lstRaci", lstRaci);
 
-			List<User> lstUser = userDAO.getAllUsert();
+			// Lay ra danh sach user co quyen bang hoac nho hon user login
+			List<User> lstUser = userDAO.findByRoleGreaterThanEqual(user.getRoleId());
 			mav.addObject("lstUser", lstUser);
 
 			mav.addObject("userLogin", user);
@@ -154,9 +159,9 @@ public class UserController {
 				List<User> lstUser = userDAO.getAllUsert();
 				mav.addObject("lstUser", lstUser);
 
-				List<ActionDetail> lstAction = actionDetailDao.getAllActionDetail();
-				mav.addObject("lstAction", lstAction);
-
+				List<Work> lstWork = this.workDao.findAll();
+				mav.addObject("lstWork", lstWork);
+				
 				mav.setViewName("index");
 			} else {
 				resetCookie(response);
@@ -313,23 +318,4 @@ public class UserController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/getAction/{idAction}", method = RequestMethod.GET)
-	public ResponseEntity<?> getAction(@PathVariable("idAction") int idAction) {
-
-		ActionDetail result = actionDetailDao.getActionById(idAction);
-		if (result != null)
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		else
-			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-	}
-
-	@RequestMapping(value = "/deleteAction", method = RequestMethod.POST)
-	public ResponseEntity<?> deleteAction(@RequestParam("idAction") int idAction) {
-
-		boolean result = actionDetailDao.deleteAction(idAction);
-		if (result)
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		else
-			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-	}
 }

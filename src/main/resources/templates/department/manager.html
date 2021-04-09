@@ -30,7 +30,7 @@
 							</div>
 						</div>
 						<div class="table-stats order-table ov-h">
-							<table class="table ">
+							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
 										<th>Mã Đơn Vị</th>
@@ -54,10 +54,10 @@
 										<td><span class="name"
 											th:text="${donVi.diaChi}"></span></td>
 										<td><input
-											th:onclick="'editDepartment (\'' + ${donVi.id}+ '\');'"
+											th:onclick="'editUnit (\'' + ${donVi.id}+ '\');'"
 											class="btn btn-info btn-sm" data-toggle="modal"
 											data-target="#editModal" type="button" value="Sửa"> <input
-											th:onclick="'deleteDepartment (\'' + ${donVi.id}+ '\');'"
+											th:onclick="'deleteUnit (\'' + ${donVi.id}+ '\');'"
 											class="btn btn-danger btn-sm" type="button" value="Xóa">
 										</td>
 									</tr>
@@ -91,7 +91,7 @@
 											</div>
 											<div class="form-group">
 												<label>Loại đơn vị</label>
-													<select id="selectDeparment" name="loaiDonVi"
+													<select id="selectUnit" name="loaiDonVi"
 														class="form-control" required>
 														<option value="1" text="">Kĩ thuật</option>
 														<option value="2" text="">Kinh doanh</option>
@@ -137,12 +137,36 @@
 									<form action="/department/edit" method="post">
 										<div class="modal-body">
 											<div class="form-group">
-												<input type="text" class="form-control" id="idDepartment"
-													placeholder="ID Department" name="idDepartment" value=""
-													required> 
-												<input type="text" class="form-control"
-													id="nameDepartment" placeholder="Department Name"
-													name="nameDepartment" value="" required>
+												<label>Mã đơn vị</label> <input type="text" readonly="true"
+													class="form-control" placeholder="Mã đơn vị" id="maDonVi"
+													name="maDonVi" th:value="${maDonViTuDong}" required>
+											</div>
+											<div class="form-group">
+												<label>Tên đơn vị</label>
+												<input type="text" class="form-control" placeholder="Tên đơn vị" name="tenDonVi" id="tenDonVi" required>
+											</div>
+											<div class="form-group">
+												<label>Loại đơn vị</label>
+													<select id="selectUnit" name="loaiDonVi"
+														class="form-control" required>
+														<option value="1" text="">Kĩ thuật</option>
+														<option value="2" text="">Kinh doanh</option>
+													</select>
+											</div>
+											<div class="form-group">
+												<label>Đơn vị cha</label>
+												<select id="selectDonViCha" name="maDonViCha"
+													class="form-control">
+													<option value="">Chọn đơn vị cha</option>
+													<option th:each="donVi: ${lstDonvi}"
+														th:value="${donVi.maDonVi}"
+														th:text="${donVi.tenDonVi}"></option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label>Địa chỉ</label> <input type="text" id="diaChi"
+													class="form-control" placeholder="Địa chỉ"
+													name="diaChi" value="" required>
 											</div>
 										</div>
 										<div class="modal-footer">
@@ -166,30 +190,30 @@
 				$("li.active").removeClass("active");
 				$("#department").addClass("active");
 			})
-			function deleteDepartment(idDepartment) {
-				$.post('/department/delete', {
-					idDepartment : idDepartment
+			function deleteUnit(unitId) {
+				$.post('/unit/delete', {
+					unitId : unitId
 				}).done(function(response) {
 					if (response == "Success") {
 						alert("Xóa danh mục thành công");
-						window.location = "/department/manager";
+						window.location = "/unit/manager";
 					} else {
 						alert("Xóa danh mục thất bại");
 					}
 				});
 			}
-			function editDepartment(idDepartment) {
-				$
-						.get('/department/get/' + idDepartment)
-						.done(
-								function(response) {
-									if (response.idDepartment == idDepartment) {
-										document.getElementById("idDepartment").value = response.idDepartment;
-										document
-												.getElementById("nameDepartment").value = response.nameDepartment;
-									}
-
-								});
+			function editUnit(unitId) {
+				$.get('/unit/get/' + unitId).done(
+					function(response) {
+						if (response.id == unitId) {
+							$("#idDepartment").val(response.idDepartment);
+							$("#maDonVi").val(response.maDonVi);
+							$("#tenDonVi").val(response.tenDonVi);
+							$("#selectUnit option[value=" + response.loaiDonVi + "]").attr('selected','selected');
+// 							$("#selectDonViCha option[value=" + response.maDonViCha + "]").attr('selected','selected');
+							$("#diaChi").val(response.diaChi);
+						}
+				});
 			}
 		</script>
 

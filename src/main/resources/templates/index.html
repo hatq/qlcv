@@ -29,63 +29,49 @@
 							</div>
 						</div>
 						<div class="table-stats order-table ov-h">
-							<table class="table ">
+							<table id="bootstrap-data-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
 										<!-- <th>ID</th> -->
 										<th>Công việc</th>
-										<th>Chủ đề</th>
+										<th>Thời gian thực hiện</th>
+										<th>Thời gian hoàn thành</th>
 										<th>Người tiếp nhận</th>
-										<th>Bắt đầu</th>
-										<th>Kết thúc</th>
+										<th>Ban GĐ</th>
+										<th>NS-TH</th>
+										<th>KT-KH</th>
+										<th>KT-ĐT</th>
+										<th>ĐHTT</th>
+										<th>CNTT</th>
+										<th>TTVT</th>
 										<th>Trạng thái</th>
+										<th>Người tạo</th>
 										<th>Thao tác</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="work : ${lstAction}">
+									<tr th:each="work : ${lstWork}">
 										<!-- <td class="serial" th:text="${work.id}"></td> -->
-										<td><span class="name" th:text="${work.actionDetailName}"></span></td>
-										<td><span class="name" th:text="${work.topic.nameTopic}"></span></td>
-										<td><span class="name"
-											th:text="${work.userCreate.userName}"></span></td>
-										<td><span class="name" th:text="${work.startDate}"></span></td>
-										<td><span class="name" th:text="${work.endDate}"></span></td>
+										<td><span class="name" th:text="${work.noiDungCv}"></span></td>
+										<td><span class="name" th:text="${#dates.format(work.timeThucHien, 'dd/MM/yyyy')}"></span></td>
+										<td><span class="name" th:text="${#dates.format(work.timeHoanThanh, 'dd/MM/yyyy')}"></span></td>
+										<td><span class="name" th:text="${work.userThucHien.userName}"></span></td>
+										<td><span class="name" th:text="${work.bgd}"></span></td>
+										<td><span class="name" th:text="${work.nsth}"></span></td>
+										<td><span class="name" th:text="${work.ktkh}"></span></td>
+										<td><span class="name" th:text="${work.ktdt}"></span></td>
+										<td><span class="name" th:text="${work.dhtt}"></span></td>
+										<td><span class="name" th:text="${work.cntt}"></span></td>
+										<td><span class="name" th:text="${work.ttvt}"></span></td>
+										<td><span class="name" th:text="${work.ketQua}"></span></td>
+										<td><span class="name" th:text="${work.user.userName}"></span></td>
 										<td>
-											<div th:switch="${work.status}">
-												<p th:case="'0'">
-													<input class="btn btn-warning btn-sm" type="button"
-														disabled value="New">
-												</p>
-												<p th:case="'1'">
-													<input class="btn btn-info btn-sm" type="button" disabled
-														value="In Progress">
-												</p>
-												<p th:case="'2'">
-													<input class="btn btn-success btn-sm" type="button"
-														disabled value="Resolved">
-												</p>
-												<p th:case="'3'">
-													<input class="btn btn-secondary btn-sm" type="button"
-														disabled value="Cancelled">
-												</p>
-												<p th:case="'4'">
-													<input class="btn btn-success btn-sm" type="button"
-														disabled value="Re-Open">
-												</p>
-												<p th:case="'5'">
-													<input class="btn btn-danger btn-sm" type="button"
-														disabled value="Closed">
-												</p>
-											</div>
-										</td>
-										<td>
-											<input class="btn btn-info btn-sm"
-											th:onclick="'editAction (\'' + ${work.id}+ '\');'"
+											<input th:if="*{userLogin.role.level <= work.userThucHien.role.level or userLogin.role.level <= work.user.role.level}" class="btn btn-info btn-sm"
+											th:onclick="'editWork (\'' + ${work.id}+ '\');'"
 											data-toggle="modal" data-target="#editModal" type="button"
 											value="Sửa">
-											<input class="btn btn-danger btn-sm"
-											th:onclick="'deleteAction (\'' + ${work.id}+ '\');'"
+											<input th:if="*{userLogin.role.level <= work.userThucHien.role.level or userLogin.role.level <= work.user.role.level}" class="btn btn-danger btn-sm"
+											th:onclick="'deleteWork (\'' + ${work.id}+ '\');'"
 											type="button" value="Xóa">
 										</td>
 									</tr>
@@ -104,7 +90,7 @@
 											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
-									<form th:action="@{/actiondetail/insert}" th:object="${work}"
+									<form th:action="@{/work/insert}" th:object="${work}"
 										method="post">
 										<div class="modal-body">
 											<div class="form-group">
@@ -127,7 +113,7 @@
 											</div>
 											<div class="form-group">
 												<label for="cc-number" class="control-label mb-1">Người thực hiện</label> <span style="color: red"> (*)</span>
-												<select required="required" name="idUser" id="select"
+												<select required="required" name="idUserThucHien" id="select"
 													class="form-control">
 													<option value="">--Người thực hiện--</option>
 													<option th:each="user: ${lstUser}"
@@ -251,11 +237,10 @@
 						</div>
 						<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 							aria-labelledby="editModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
+							<div class="modal-dialog modal-lg" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h5 class="modal-title" id="editModalLabel">Chỉnh sửa
-											công việc</h5>
+										<h5 class="modal-title" id="editModalLabel">Chỉnh sửa công việc</h5>
 										<button type="button" class="close" data-dismiss="modal"
 											aria-label="Close">
 											<span aria-hidden="true">&times;</span>
@@ -264,70 +249,126 @@
 									<form th:action="@{/actiondetail/insert}" th:object="${actiondetailRequest}"
 										method="post">
 										<div class="modal-body">
+											<input type="text" class="form-control" id="idEditWork" name="id" value="" hidden="hidden" required />
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Công
-													Việc</label> <input type="text" class="form-control"
-													id="idEditAction" name="id" value="" hidden="hidden"
-													required />
-												<input type="text" class="form-control" placeholder="Tên công việc" id="nameEditAction" name="actionDetailName"
-													value="" required />
-											</div>
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Chủ
-													đề</label> <select id="selectEditTopic" name="idTopic" class="form-control">
-													<option value="0">--Loại chủ đề--</option>
-													<option th:each="topic: ${lstTopic}"
-														th:value="${topic.idTopic}" th:text="${topic.nameTopic}"></option>
-												</select>
-
-											</div>
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Người
-													thực hiện</label> <select name="idUser" id="selectEditUser"
+												<label for="cc-number" class="control-label mb-1">Đơn vị</label><span style="color: red"> (*)</span> 
+												<select required="required" name="idDonVi" id="selectDonViEdit" 
 													class="form-control">
+													<option value="0">--Chọn đơn vị--</option>
+													<option th:each="donVi: ${lstDonVi}"
+														th:value="${donVi.id}" th:text="${donVi.tenDonVi}"></option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">STT Công việc</label><span style="color: red"> (*)</span>
+												<input type="number" class="form-control" placeholder="STT Công việc" id="sttCongViec" name="sttCongViec" value="" required>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Nội dung công việc</label>
+												<input type="text" class="form-control" placeholder="Tên công việc" id="noiDungCvEdit" name="noiDungCv" value="" required />
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Người thực hiện</label> 
+												<select name="idUser" id="selectEditUser" class="form-control">
 													<option value="0">--Người thực hiện--</option>
 													<option th:each="user: ${lstUser}"
 														th:value="${user.idUser}" th:text="${user.userName}"></option>
 												</select>
 											</div>
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Từ
-													ngày</label>
+												<label for="cc-number" class="control-label mb-1">Ngày thực hiện</label>
 												<div class="input-group">
-													<input type="text" class="form-control"
-														placeholder="dd/MM/yyyy" id="startDate" name="startDate">
-													<div class="input-group-append">
-														<span class="input-group-text"><i
-															class="md md-event-note"></i></span>
-													</div>
-												</div>
-												<!-- input-group -->
-											</div>
-											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Đến
-													ngày</label>
-												<div>
-													<div class="input-group">
-														<input type="text" class="form-control"
-															placeholder="dd/MM/yyyy" id="endDate" name="endDate">
-														<div class="input-group-append">
-															<span class="input-group-text"><i
-																class="md md-event-note"></i></span>
-														</div>
-													</div>
-													<!-- input-group -->
+													<input type="date" class="form-control" placeholder="dd/MM/yyyy" id="timeThucHien" name="timeThucHien">
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="cc-number" class="control-label mb-1">Trạng thái</label> <select name="status" id="selectEditStatus"
-													class="form-control">
-													<option th:value="0">New(Chờ thực hiện)</option>
-													<option th:value="1">In Progress(Đang thực hiện)</option>
-													<option th:value="2">Resolved(Hoàn thành xử lý)</option>
-													<option th:if="${userLogin.role.level != 4}" th:value="3">Cancelled(Trạng thái hủy yêu cầu)</option>
-													<option th:if="${userLogin.role.level != 4}" th:value="4">Re-Open(Không phù hợp)</option>
-													<option th:if="${userLogin.role.level != 4}" th:value="5">Closed (Hoàn thành đóng yêu cầu)</option>
+												<label for="cc-number" class="control-label mb-1">Ngày hoàn thành</label>
+												<div class="input-group">
+													<input type="date" class="form-control" placeholder="dd/MM/yyyy" id="timeHoanThanh" name="timeHoanThanh">
+												</div>
+											</div>
+											<div class="row">
+    											<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Ban giám đốc</label>
+														<select id="selectBgd" name="bgd" class="form-control" multiple>
+															<option value="none">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+													</div>
+												</div>
+												<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Phòng NS-TH</label>
+														<select id="selectNsth" name="nsth" class="form-control" multiple>
+															<option value="none">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+    											<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Phòng KT-KH</label>
+														<select id="selectKtkh" name="ktkh" class="form-control" multiple>
+															<option value="none">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+		
+													</div>
+												</div>
+												<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">Phòng KT-ĐT</label>
+														<select id="selectKtdt" name="ktdt" class="form-control" multiple>
+															<option value="none">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+		
+													</div>
+												</div>
+											</div>
+											<div class="row">
+    											<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">TT ĐHTT</label>
+														<select id="selectDhtt" name="dhtt" class="form-control" multiple>
+															<option value="none">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+		
+													</div>
+												</div>
+												<div class="col">
+													<div class="form-group">
+														<label for="cc-number" class="control-label mb-1">TT CNTT</label>
+														<select id="selectCntt" name="cntt" class="form-control" multiple>
+															<option value="none">--Chọn RACI--</option>
+															<option th:each="raci: ${lstRaci}"
+															th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
+														</select>
+		
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Các TTVT</label>
+												<select id="selectTtvt" name="ttvt" class="form-control" multiple>
+													<option value="none">--Chọn RACI--</option>
+													<option th:each="raci: ${lstRaci}"
+													th:value="${raci.kiHieu}" th:text="${raci.ten}"></option>
 												</select>
+
+											</div>
+											<div class="form-group">
+												<label for="cc-number" class="control-label mb-1">Kết quả</label>
+												<input type="text" class="form-control" name="ketQua" id="ketQua" value="">
 											</div>
 										</div>
 										<div class="modal-footer">
@@ -351,54 +392,84 @@
 				$("#home").addClass("active");
 			});
 			
-			function deleteAction(id) {
+			function deleteWork(id) {
 				console.log(id);
-				$.post('/deleteAction', {
-					idAction : id
+				$.post('/work/delete', {
+					workId : id
 				}).done(function(response) {
 					location.reload();
 				});
 			}
-			function editAction(id) {
-				$("#idEditAction").val(id);
+			function editWork(id) {
+				$("#selectBgd").val('');
+				$("#selectNsth").val('');
+				$("#selectKtkh").val('');
+				$("#selectKtdt").val('');
+				$("#selectDhtt").val('');
+				$("#selectCntt").val('');
+				$("#selectTtvt").val('');
+				$("#idEditWork").val(id);
 				
-				$.get('/getAction/' + id).done(
-								function(response) {
-									if (response.id == id) {
-										//console.log(response);
-										$("#nameEditAction").val(
-												response.actionDetailName);
-										var start = new Date(response.startDate);
-										var dd = start.getDate();
-										var mm = start.getMonth()+1;
-										var yyyy= start.getFullYear();
-										if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
-										var startDate = dd+'/'+mm+'/'+yyyy;
-										$("#startDate").val(startDate);
-										
-										var end = new Date(response.endDate);
-										var dd = end.getDate();
-										var mm = end.getMonth()+1;
-										var yyyy= end.getFullYear();
-										if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
-										var endDate = dd+'/'+mm+'/'+yyyy;
-										$("#endDate").val(endDate);
-										
-										$("#selectEditTopic option[value="
-														+ response.topic.idTopic
-														+ "]").attr('selected','selected');
-										$("#selectEditUser option[value="
-												+ response.userAssign.idUser
-												+ "]").attr('selected','selected');
-										
-										$("#selectEditStatus option[value="
-												+ response.status
-												+ "]").attr('selected','selected');
-										
-								
-									}
-
-								});
+				$.get('/work/get/' + id).done(function(response) {
+					if (response.id == id) {
+						$("#selectDonViEdit option[value=" + response.idDonVi + "]").attr('selected','selected');
+						$("#noiDungCvEdit").val(response.noiDungCv);
+						$("#timeThucHien").val(convertDate(response.timeThucHien));
+						$("#timeHoanThanh").val(convertDate(response.timeHoanThanh));
+						$("#sttCongViec").val(response.stt);
+						$("#selectEditUser option[value=" + response.idUserThucHien + "]").attr('selected','selected');
+						if (response.bgd != null) {
+							$.each(response.bgd.split(""), function(i,e){
+							    $("#selectBgd option[value='" + e + "']").prop("selected", true);
+							});
+						}
+						if (response.nsth != null) {
+							$.each(response.nsth.split(""), function(i,e){
+							    $("#selectNsth option[value='" + e + "']").prop("selected", true);
+							});
+						}
+						if (response.ktkh != null) {
+							$.each(response.ktkh.split(""), function(i,e){
+							    $("#selectKtkh option[value='" + e + "']").prop("selected", true);
+							});
+						}
+						if (response.ktdt != null) {
+							$.each(response.ktdt.split(""), function(i,e){
+							    $("#selectKtdt option[value='" + e + "']").prop("selected", true);
+							});
+						}
+						if (response.dhtt != null) {
+							$.each(response.dhtt.split(""), function(i,e){
+							    $("#selectDhtt option[value='" + e + "']").prop("selected", true);
+							});
+						}
+						if (response.cntt != null) {
+							$.each(response.cntt.split(""), function(i,e){
+							    $("#selectCntt option[value='" + e + "']").prop("selected", true);
+							});
+						}
+						if (response.ttvt != null) {
+							$.each(response.ttvt.split(""), function(i,e){
+							    $("#selectTtvt option[value='" + e + "']").prop("selected", true);
+							});
+						}
+						$("#ketQua").val(response.ketQua);
+					}
+				});
+			}
+			
+			function convertDate(date) {
+				var dateTime = new Date(date);
+				var dd = dateTime.getDate();
+				var mm = dateTime.getMonth()+1;
+				var yyyy= dateTime.getFullYear();
+				if (dd<10) {
+					dd = '0' + dd;
+				}
+				if (mm<10) {
+					mm = '0' + mm;
+				}
+				return yyyy + '-' + mm + '-' + dd;
 			}
 		</script>
 	</div>

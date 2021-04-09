@@ -49,7 +49,7 @@
 					<li class="menu-title">Tổng hợp</li>
 					<!-- /.menu-title -->
 					<li id="department" class="menu-item"><a
-						href="/department/manager" class="dropdown-toggle"> <i
+						href="/unit/manager" class="dropdown-toggle"> <i
 							class="menu-icon fa fa-cogs"></i>Quản lý đơn vị
 					</a></li>
 					<li id="topic" class="menu-item active"><a href="/topic"
@@ -63,10 +63,10 @@
 
 					<li class="menu-title">Phòng Ban</li>
 
-					<li th:each="department : ${lstDepartment}" class="menu-item">
-						<a th:href="${'/department/library/'+department.idDepartment}"
+					<li th:each="donVi : ${lstDonVi}" class="menu-item">
+						<a th:href="${'/department/library/'+donVi.id}"
 						class="dropdown-toggle"> <i class="menu-icon fa fa-tasks"></i><span
-							th:text="${department.getNameDepartment()}"></span></a>
+							th:text="${donVi.tenDonVi}"></span></a>
 					</li>
 					<li th:if="*{userLogin.getRole().getLevel() == 1}"
 						class="menu-title">Quản lý hệ thống</li>
@@ -133,5 +133,17 @@
 		src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
 
 	<script th:src="@{/js/main.js}"></script>
+	<script th:src="@{/js/lib/data-table/dataTables.bootstrap.min.js}"></script>
+	<!-- Scripts -->
+    <script th:src="@{/js/lib/data-table/datatables.min.js}"></script>
+    <script th:src="@{/js/lib/data-table/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/js/lib/data-table/dataTables.buttons.min.js}"></script>
+    <script th:src="@{/js/lib/data-table/buttons.bootstrap.min.js}"></script>
+    <script th:src="@{/js/lib/data-table/jszip.min.js}"></script>
+    <script th:src="@{/js/lib/data-table/vfs_fonts.js}"></script>
+    <script th:src="@{/js/lib/data-table/buttons.html5.min.js}"></script>
+    <script th:src="@{/js/lib/data-table/buttons.print.min.js}"></script>
+    <script th:src="@{/js/lib/data-table/buttons.colVis.min.js}"></script>
+    <script th:src="@{/js/init/datatables-init.js}"></script>
 </body>
 </html>

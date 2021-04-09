@@ -16,6 +16,8 @@ public class WorkRequest {
 	
 	private Integer idUser;
 	
+	private Integer idUserThucHien;
+	
 	private String timeThucHien;
 	
 	private String timeHoanThanh;

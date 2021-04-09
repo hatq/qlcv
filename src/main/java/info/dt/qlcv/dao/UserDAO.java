@@ -35,6 +35,10 @@ public class UserDAO {
 		return userOptional.orElse(null);
 
 	}
+	
+	public List<User> findByRoleGreaterThanEqual(Integer roleId) {
+		return this.userRepository.findByRoleIdGreaterThanEqual(roleId);
+	}
 
 	public User getUserById(int idUser) {
 		Optional<User> userOptional = userRepository.findById(idUser);
