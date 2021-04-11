@@ -53,6 +53,35 @@ public class WorkDAO {
 		return workRepo.save(work);
 	}
 	
+	public String edit(WorkRequest workRequest) {
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date timeTH = formatter.parse(workRequest.getTimeThucHien());
+			Date timeHT = formatter.parse(workRequest.getTimeHoanThanh());
+			Optional<Work> oWork = this.workRepo.findById(workRequest.getId());
+			if (oWork.isPresent()) {
+				oWork.get().setIdDonVi(workRequest.getIdDonVi());
+				oWork.get().setStt(workRequest.getSttCongViec());
+				oWork.get().setNoiDungCv(workRequest.getNoiDungCv());
+				oWork.get().setIdUserThucHien(workRequest.getIdUserThucHien());
+				oWork.get().setTimeThucHien(timeTH);
+				oWork.get().setTimeHoanThanh(timeHT);
+				oWork.get().setBgd(convertRACI(workRequest.getBgd()));
+				oWork.get().setNsth(convertRACI(workRequest.getNsth()));
+				oWork.get().setKtkh(convertRACI(workRequest.getKtkh()));
+				oWork.get().setKtdt(convertRACI(workRequest.getKtdt()));
+				oWork.get().setDhtt(convertRACI(workRequest.getDhtt()));
+				oWork.get().setCntt(convertRACI(workRequest.getCntt()));
+				oWork.get().setTtvt(convertRACI(workRequest.getTtvt()));
+				oWork.get().setKetQua(workRequest.getKetQua());
+				this.workRepo.save(oWork.get());
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return "";
+	}
+	
 	public boolean delete(Integer id){
         try {
         	workRepo.deleteById(id);

@@ -262,7 +262,7 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `id_user` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -271,7 +271,6 @@ CREATE TABLE `user` (
   KEY `FKn82ha3ccdebhokx3a8fgdqeyy` (`role_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `user`
 --
@@ -387,6 +386,6 @@ ADD COLUMN `create_time` DATETIME NULL AFTER `status`,
 ADD COLUMN `update_time` DATETIME NULL AFTER `create_time`,
 CHANGE COLUMN `email` `user_name` VARCHAR(255) NULL DEFAULT NULL ,
 CHANGE COLUMN `user_name` `first_name` VARCHAR(255) NULL DEFAULT NULL ,
-CHANGE COLUMN `role_id` `last_name` VARCHAR(255) NULL DEFAULT NULL ;
-ADD COLUMN `role_id` INT NULL AFTER `status`;
+CHANGE COLUMN `role_id` `last_name` VARCHAR(255) NULL DEFAULT NULL ,
+ADD COLUMN `role_id` INT NULL AFTER `status`,
 ADD COLUMN `email` VARCHAR(200) NULL AFTER `phone`;

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class WorkRequest {
 
-	private int id;
+	private Integer id;
 	
 	private Integer idDonVi;
 	

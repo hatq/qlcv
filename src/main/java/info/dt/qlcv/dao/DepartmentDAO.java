@@ -32,7 +32,7 @@ public class DepartmentDAO {
     
     public String taoMaDonVi() {
     	long count = unitRepo.count();
-    	String formatted = String.format("DV.%03d", count+1);
+    	String formatted = String.format("DV%03d", count+1);
     	return formatted;
     }
     

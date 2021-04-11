@@ -40,6 +40,14 @@ public class WorkController {
         return mav;
     }
 	
+	@PostMapping("/edit")
+	private ModelAndView edit(@ModelAttribute("work")  WorkRequest workRequest) {
+		ModelAndView mav = new ModelAndView();
+		this.workDao.edit(workRequest);
+		mav.setViewName("redirect:/");
+		return mav;
+	}
+	
 	@RequestMapping(value = "/get/{idWork}", method = RequestMethod.GET)
 	public ResponseEntity<?> getAction(@PathVariable("idWork") Integer id) {
 

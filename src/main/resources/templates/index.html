@@ -46,7 +46,7 @@
 										<th>TTVT</th>
 										<th>Trạng thái</th>
 										<th>Người tạo</th>
-										<th>Thao tác</th>
+										<th style="width: 10%;">Thao tác</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -246,7 +246,7 @@
 											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
-									<form th:action="@{/actiondetail/insert}" th:object="${actiondetailRequest}"
+									<form th:action="@{/work/edit}" th:object="${work}"
 										method="post">
 										<div class="modal-body">
 											<input type="text" class="form-control" id="idEditWork" name="id" value="" hidden="hidden" required />

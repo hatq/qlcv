@@ -156,7 +156,8 @@ public class UserController {
 				List<Raci> lstRaci = raciDao.getAll();
 				mav.addObject("lstRaci", lstRaci);
 
-				List<User> lstUser = userDAO.getAllUsert();
+				// Lay ra danh sach user co quyen bang hoac nho hon user login
+				List<User> lstUser = userDAO.findByRoleGreaterThanEqual(userLogin.getRoleId());
 				mav.addObject("lstUser", lstUser);
 
 				List<Work> lstWork = this.workDao.findAll();

@@ -165,7 +165,7 @@ public class UnitController {
 
 		int department = actionDetailDao.insertActionDetail(actionDetailRequest);
 
-		mav.setViewName("redirect:/department/library/" + department);
+		mav.setViewName("redirect:/unit/library/" + department);
 		return mav;
 	}
 }
