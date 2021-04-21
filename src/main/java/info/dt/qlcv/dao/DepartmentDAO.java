@@ -1,7 +1,6 @@
 package info.dt.qlcv.dao;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import info.dt.qlcv.entity.Department;
-import info.dt.qlcv.entity.Unit;
 import info.dt.qlcv.model.DepartmentRequest;
-import info.dt.qlcv.model.UnitRequest;
 import info.dt.qlcv.repository.DepartmentRepository;
 import info.dt.qlcv.repository.UnitRepository;
 
@@ -30,34 +27,6 @@ public class DepartmentDAO {
 
     }
     
-    public String taoMaDonVi() {
-    	long count = unitRepo.count();
-    	String formatted = String.format("DV%03d", count+1);
-    	return formatted;
-    }
-    
-    public String addUnit(UnitRequest unitRequest) {
-    	try {
-    		if (!unitRepo.existsUnitByTenDonVi(unitRequest.getTenDonVi())) {
-				Unit unit = new Unit();
-				unit.setMaDonVi(unitRequest.getMaDonVi());
-				unit.setTenDonVi(unitRequest.getTenDonVi());
-				unit.setLoaiDonVi(unitRequest.getLoaiDonVi());
-				unit.setMaDonViCha(unitRequest.getMaDonViCha());
-				unit.setDiaChi(unitRequest.getDiaChi());
-				unit.setThoiGianTao(new Date());
-				unit.setThoiGianCapNhat(new Date());
-				
-				this.unitRepo.save(unit);
-				return "True";
-			}
-    		return "False1";
-			
-		} catch (Exception e) {
-			return e.getMessage();
-		}
-    }
-
     public String editDepartment(DepartmentRequest departmentRequest){
         try {
             Optional<Department> departmentOptional = departmentRepository.findById(departmentRequest.getIdDepartment());

@@ -96,6 +96,9 @@ public class WorkDAO {
 		StringBuilder str = new StringBuilder();
 		if (arr != null) {
 			for (String string : arr) {
+				if (string.equals("none")) {
+					return str.toString();
+				}
 				str.append(string);
 			}
 			return str.toString();

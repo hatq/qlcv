@@ -136,6 +136,7 @@
 									</div>
 									<form action="/unit/edit" method="post">
 										<div class="modal-body">
+											<input type="text" class="form-control" id="id" name="id" value="" hidden="hidden"/>
 											<div class="form-group">
 												<label>Mã đơn vị</label> <input type="text" readonly="true"
 													class="form-control" placeholder="Mã đơn vị" id="maDonVi"
@@ -206,11 +207,14 @@
 				$.get('/unit/get/' + unitId).done(
 					function(response) {
 						if (response.id == unitId) {
-							$("#idDepartment").val(response.idDepartment);
+							$("#selectDonViCha option:selected").prop("selected", false)
+							$("#id").val(response.id);
 							$("#maDonVi").val(response.maDonVi);
 							$("#tenDonVi").val(response.tenDonVi);
 							$("#selectUnit option[value=" + response.loaiDonVi + "]").attr('selected','selected');
-// 							$("#selectDonViCha option[value=" + response.maDonViCha + "]").attr('selected','selected');
+							if (response.maDonViCha != "") {
+								$("#selectDonViCha option[value=" + response.maDonViCha + "]").attr('selected','selected');
+							}
 							$("#diaChi").val(response.diaChi);
 						}
 				});

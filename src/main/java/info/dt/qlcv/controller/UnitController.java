@@ -20,18 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import info.dt.qlcv.dao.ActionDetailDAO;
-import info.dt.qlcv.dao.DepartmentDAO;
 import info.dt.qlcv.dao.RoleDAO;
 import info.dt.qlcv.dao.TopicDAO;
 import info.dt.qlcv.dao.UnitDAO;
 import info.dt.qlcv.dao.UserDAO;
 import info.dt.qlcv.entity.ActionDetail;
-import info.dt.qlcv.entity.Department;
 import info.dt.qlcv.entity.Topic;
 import info.dt.qlcv.entity.Unit;
 import info.dt.qlcv.entity.User;
 import info.dt.qlcv.model.ActionDetailRequest;
-import info.dt.qlcv.model.DepartmentRequest;
 import info.dt.qlcv.model.UnitRequest;
 
 @RestController
@@ -40,9 +37,6 @@ public class UnitController {
 
 	@Autowired
 	private UserDAO userDAO;
-	
-	@Autowired
-	private DepartmentDAO departmentDAO;
 	
 	@Autowired
 	private TopicDAO topicDAO;
@@ -60,7 +54,7 @@ public class UnitController {
 	public ModelAndView createDepartment(@Valid UnitRequest unit, BindingResult bindingResult) {
 		ModelAndView mav = new ModelAndView("department/manager");
 
-		String result = departmentDAO.addUnit(unit);
+		String result = unitDao.addUnit(unit);
 		if (result.equals("True"))
 			return new ModelAndView("redirect:/unit/manager");
 		else {
@@ -71,10 +65,10 @@ public class UnitController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public ModelAndView editDepartment(@Valid DepartmentRequest departmentRequest, BindingResult bindingResult) {
+	public ModelAndView editDepartment(@Valid UnitRequest unit, BindingResult bindingResult) {
 		ModelAndView mav = new ModelAndView("department/manager");
 
-		String result = departmentDAO.editDepartment(departmentRequest);
+		String result = unitDao.editUnit(unit);
 		if (result.equals("True"))
 			mav.setViewName("redirect:/unit/manager");
 		else {
@@ -95,7 +89,7 @@ public class UnitController {
 			mav.addObject("userLogin", user);
 			List<Unit> lstDonvi = unitDao.findAll();
 			mav.addObject("lstDonvi", lstDonvi);
-			mav.addObject("maDonViTuDong", this.departmentDAO.taoMaDonVi());
+			mav.addObject("maDonViTuDong", this.unitDao.taoMaDonVi());
 			mav.setViewName("department/manager");
 		} else {
 			mav.setViewName("redirect:/unit/manager");
@@ -116,8 +110,8 @@ public class UnitController {
 			mav.addObject("userLogin", user);
 			List<Topic> lstTopic = topicDAO.getTopicByIdDepartment(idDeparment);
 			mav.addObject("lstTopic", lstTopic);
-			List<Department> lstDepartment = departmentDAO.getAllDepartment();
-			mav.addObject("lstDepartment", lstDepartment);
+//			List<Department> lstDepartment = departmentDAO.getAllDepartment();
+//			mav.addObject("lstDepartment", lstDepartment);
 
 			mav.addObject("listactionDeparment", listactionDeparment);
 			mav.setViewName("department/library");
@@ -147,10 +141,10 @@ public class UnitController {
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public ResponseEntity<?> delete(@RequestParam("idDepartment") int idDepartment) {
+	public ResponseEntity<?> delete(@RequestParam("unitId") int id) {
 		boolean check = false;
-		if (idDepartment > -1) {
-			check = departmentDAO.delete(idDepartment);
+		if (id > -1) {
+			check = unitDao.delete(id);
 		}
 		if (check)
 			return ResponseEntity.ok("Success");
