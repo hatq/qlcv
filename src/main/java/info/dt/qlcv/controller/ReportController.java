@@ -50,15 +50,7 @@ public class ReportController {
 			return toDomain(i, listWork.indexOf(i));
 		}).collect(Collectors.toList());
 		
-		List<WorkReport> lstParam1 = listWork.stream().map(i -> {
-			return toDomain(i, listWork.indexOf(i));
-		}).collect(Collectors.toList());
-		
-		List<List<WorkReport>> lstItem = new ArrayList<List<WorkReport>>();
-		lstItem.add(lstParam);
-		lstItem.add(lstParam1);
-		
-		JRBeanCollectionDataSource itemsBean = new JRBeanCollectionDataSource(lstItem);
+		JRBeanCollectionDataSource itemsBean = new JRBeanCollectionDataSource(lstParam);
 		
 		Map<String, Object> params = new HashMap<>();
 		params.put("CollectionBeanParam", itemsBean);

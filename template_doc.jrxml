@@ -57,6 +57,9 @@
 		<parameterDescription><![CDATA[]]></parameterDescription>
 		<defaultValueExpression><![CDATA[$P{CollectionBeanParam}]]></defaultValueExpression>
 	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\HATQ\\Work\\qlcv\\"]]></defaultValueExpression>
+	</parameter>
 	<title>
 		<band height="126" splitType="Stretch">
 			<staticText>
@@ -416,7 +419,13 @@
 								<text><![CDATA[Kết quả]]></text>
 							</staticText>
 						</jr:tableHeader>
-						<jr:columnHeader height="30" rowSpan="1"/>
+						<jr:columnHeader height="30" rowSpan="1">
+							<subreport>
+								<reportElement x="0" y="0" width="94" height="30" uuid="e986d802-0977-4be2-92cd-112e6009c2bc"/>
+								<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
+								<subreportExpression><![CDATA["D:\\HATQ\\Work\\qlcv\\template_doc_subreport.jasper"]]></subreportExpression>
+							</subreport>
+						</jr:columnHeader>
 						<jr:columnFooter style="table 9_TD" height="0" rowSpan="1"/>
 						<jr:detailCell style="table 9_TD" height="30" rowSpan="1">
 							<textField>
