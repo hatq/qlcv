@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import info.dt.qlcv.dao.WorkDAO;
 import info.dt.qlcv.entity.Work;
 import info.dt.qlcv.model.WorkReport;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -63,15 +61,27 @@ public class ReportController {
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
         /* Using jasperReport object to generate PDF */
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, itemsBean);
+        
+        
+//        JRXlsxExporter exporter = new JRXlsxExporter();
+//        SimpleXlsxReportConfiguration reportConfigXLS = new SimpleXlsxReportConfiguration();
+//        reportConfigXLS.setSheetNames(new String[] { "sheet1" });
+//        exporter.setConfiguration(reportConfigXLS);
+//        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+//        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(response.getOutputStream()));
+//        response.setHeader("Content-Disposition", "attachment;filename=jasperReport.xlsx");
+//        response.setContentType("application/octet-stream");
+//        exporter.exportReport();
+        
         
         JRDocxExporter exporter = new JRDocxExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        File exportReportFile = new File(outFile);    
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(exportReportFile)); 
-//        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(response.getOutputStream()));
-//        response.setHeader("Content-Disposition", "attachment;filename=jasperfile.docx");
-//        response.setContentType("application/octetstream");
+//        File exportReportFile = new File(outFile);    
+//        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(exportReportFile)); 
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(response.getOutputStream()));
+        response.setHeader("Content-Disposition", "attachment;filename=bao_cao_cv.docx");
+        response.setContentType("application/octet-stream");
         exporter.exportReport();
 
         System.out.println("File Generated");
